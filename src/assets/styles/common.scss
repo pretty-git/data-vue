@@ -1,9 +1,5 @@
 @charset "utf-8";
-/*
- *  描述: 动画组件通用样式
- *  作者：Jack Chen
- *  时间：2020-04-18
- */
+
 
 .wrap-container {
   position: absolute;
@@ -33,7 +29,7 @@
   width: 500px; 
   height: 550px;
   border: 2px solid rgba(92,255,255,0.1);
-  background: rgba(10,106,255,0.1) url(../../assets/img/wg.png) repeat 50% 50% !important;
+  // background: rgba(10,106,255,0.1) url(../../assets/img/wg.png) repeat 50% 50% !important;
   background-blend-mode: screen;
   overflow: visible;
   &:before {
@@ -84,7 +80,7 @@
         margin-top: -7px;
         width: 14px;
         height: 14px;
-        background: url(../../assets/img/sn-title.png) no-repeat 0% 0%;
+        // background: url(../../assets/img/sn-title.png) no-repeat 0% 0%;
       }
     }
     &:before {
