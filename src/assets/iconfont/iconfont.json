@@ -1,0 +1,16 @@
+{
+  "id": "4220108",
+  "name": "no name",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "6527115",
+      "name": "人员",
+      "font_class": "renyuan",
+      "unicode": "e645",
+      "unicode_decimal": 58949
+    }
+  ]
+}

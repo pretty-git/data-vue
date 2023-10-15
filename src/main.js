@@ -3,15 +3,18 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import vueParticles from 'vue-particles'
-import Vcomp from './components/index'
 
 import '@/assets/styles/base.scss'
 import '@/assets/styles/common.scss'
 import '@/assets/iconfont/iconfont.css'
+import dataV from '@jiaminghi/data-view'
 
+Vue.use(dataV)
 Vue.use(vueParticles)
-Vue.use(Vcomp)
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
 
+Vue.use(ElementUI);
 Vue.config.productionTip = false
 
 

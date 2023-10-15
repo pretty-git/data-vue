@@ -21,13 +21,16 @@
 
 
 
-		<modal title="提示" :content="modalContent" :visible.sync="visible" @confirm="confirm">
-		</modal>
+
 
 	</div>
 </template>
 
 <script>
+
+import md5 from 'md5'
+import { getLogin } from '../config/logic'
+
 
 export default {
 	name: 'Login',
@@ -43,30 +46,41 @@ export default {
 	computed: {
 		isLoginAble() {
 			return !(this.userName && this.userPwd);
-		}
+		},
 	},
 	created() { },
 	mounted() {
-
 	},
+
 	methods: {
-		login() {
-			if (this.userName == 'admin' && this.userPwd == '123456') {
-				this.$router.push({
-					path: '/home'
-				})
-			} else {
+		async login() {
+
+			if (!this.userName || !this.userPwd) {
 				this.$Toast({
 					content: '请输入正确的用户名和密码',
 					type: 'error',
-					// hasClose: true
 				})
+			} else {
+				const timestamp = new Date().getTime();
+				const auth = md5(`${this.userName}${timestamp}${this.userPwd}`)
+				const data = await getLogin({
+					username: this.userName,
+					timestamp,
+					auth,
+					type: 1,
+					veriCode: md5(this.userPwd)
+				})
+				this.$store.commit('SET_TOKEN',data.token)
+				this.$store.commit('Authorization',auth)
+
+				
+					this.$router.push({
+					path: '/home'
+				})
+			
 			}
 		},
-		confirm() {
-			this.visible = false;
-			console.log('点击确定')
-		}
+	
 	}
 }
 </script>
