@@ -1,7 +1,7 @@
 <template>
     <div class="table">
 
-        <dv-border-box-10 style="width: 100%;">
+        <dv-border-box-10 style="width: 100%;height: 40vh;">
             <div class="echart-title">
                 <div class="left-icon"></div>车辆进出站信息
             </div>

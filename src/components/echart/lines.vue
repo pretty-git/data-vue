@@ -3,7 +3,7 @@
         <div class="echart-title" v-show="show">
             <div class="left-icon"></div>图表信息折线图
         </div>
-        <dv-border-box-10 style="width: 100%;" v-if="isBorder">
+        <dv-border-box-10 style="width: 100%;" v-if="isBorder" :style="{ height:height }">
             <div class="chart" :style="{ height:height }" id="chart_left1"></div>
         </dv-border-box-10>
         <div class="chart" :style="{ height:height }" id="chart_left1" v-else></div>
@@ -35,7 +35,7 @@ export default {
         },
         height:{
             type: String,
-            default: '30vh'
+            default: '35vh'
         },
         data:{
             type:Object,

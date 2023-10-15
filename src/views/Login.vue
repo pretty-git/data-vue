@@ -3,7 +3,7 @@
 <template>
 	<div class="login-container">
 		<div class="form">
-			<h2>大数据可视化平台</h2>
+			<h2>中央控制管理系统</h2>
 			<div class="item">
 				<i class="iconfont icon-user"></i>
 				<input autocomplete="off" type="text" class="input" v-model="userName" placeholder="请输入用户名" />
@@ -102,13 +102,13 @@ export default {
 
 .form {
 	width: 460px;
-	height: auto;
-	background: rgba(52, 52, 175, 0.5);
-	margin: 50vh auto;
-	padding: 35px 30px 25px;
-	box-shadow: 0 0 25px rgba(255, 255, 255, 0.5);
-	border-radius: 10px;
-	transform: translateY(-50%);
+    height: auto;
+    background: rgb(10, 86, 150);
+    margin: 50vh auto;
+    padding: 35px 30px 25px;
+    box-shadow: 0 0 9px rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    transform: translateY(-50%);
 }
 
 .item {

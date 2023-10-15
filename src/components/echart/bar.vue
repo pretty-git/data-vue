@@ -3,7 +3,7 @@
         <div class="echart-title" v-show="show">
             <div class="left-icon"></div>图表信息柱体图
         </div>
-        <dv-border-box-10 style="width: 100%;" v-if="isBorder">
+        <dv-border-box-10 style="width: 100%;" v-if="isBorder" :style="{ height:height }">
             <div class="chart" :style="{ height: height }" id="chart_left2"></div>
         </dv-border-box-10>
         <div class="chart" :style="{ height: height }" id="chart_left2" v-else></div>
@@ -138,6 +138,7 @@ export default {
 </script>
 <style lang="scss" scoped> .bar {
      margin-top: 24px;
+     min-width: 300px;
 
  }
 

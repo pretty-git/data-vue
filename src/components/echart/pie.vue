@@ -65,6 +65,7 @@ export default {
 .pie {
      width: 35%;
      margin-top: 16px;
+     height: 30vh;
  }
 
  .chart {

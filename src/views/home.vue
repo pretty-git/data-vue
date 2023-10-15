@@ -3,12 +3,12 @@
         <Top></Top>
         <div class="content">
             <Lines></Lines>
-            <div style="width: 30%;height: 300px;"></div>
+            <div style="width: 30%;height: 30vh;"></div>
             <Pie></Pie>
            
         </div>
         <div class="content" style="margin-top: 0;">
-            <Bar></Bar>
+            <Bar height="35vh"></Bar>
             <Ber></Ber>
             <Table></Table>
         </div>
