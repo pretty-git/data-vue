@@ -62,12 +62,13 @@
     </div>
 </template>
 <script>
+import { Message } from 'element-ui';
 
 
 export default {
     data() {
         return {
-            controlStatus: { },
+            controlStatus: {},
             form: {
                 account: '',
                 password: '',
@@ -128,8 +129,8 @@ export default {
             this.isLogin = false
         },
         login() {
-            if(this.form.password || !this.form.account) {
-                this.$message.error("请输入帐号和密码")
+            if (this.form.password || !this.form.account) {
+                Message.error("请输入帐号和密码")
                 return
             }
             this.isLogin = true

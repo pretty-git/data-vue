@@ -104,11 +104,14 @@ export default {
             this.tab = item.id
         },
         async getDetail() {
-            this.berObj = await this.$api.getBerDetail({
-                berthId: this.$route.query.berthId
-            })
+            // this.berObj = await this.$api.getBerDetail({
+            //     berthId: this.$route.query.berthId
+            // })
             const { weigth } = await this.$api.getGarbage({
-                berthId: this.$route.query.berthId
+                berthId: +this.$route.query.berthId,
+                "subtime": "20231001",
+                "statType": 0
+
 
             })
             const { trans } = await this.$api.getCar({

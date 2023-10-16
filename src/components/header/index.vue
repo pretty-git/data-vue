@@ -154,6 +154,11 @@ export default {
             }
 
         },
+        // 清除指定名称的 cookie
+        deleteCookie(name) {
+            document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;";
+        },
+
         backHome() {
             this.$router.push('home');
         },
@@ -183,6 +188,8 @@ export default {
         },
         logout() {
             clearInterval(this.logout)
+            this.deleteCookie('SET_TOKEN')
+            this.deleteCookie('Authorization')
             this.$router.push('login')
         }
     },

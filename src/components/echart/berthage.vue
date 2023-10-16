@@ -47,7 +47,7 @@ export default {
     },
     async created() {
         this.Authorization = this.$store.state.Authorization
-        this.berList = await this.$api.getBerList()
+        // this.berList = await this.$api.getBerList()
     },
     mounted() {
 
@@ -206,4 +206,5 @@ export default {
      display: flex;
      align-items: center;
      justify-content: center;
- }</style>
+ }
+</style>

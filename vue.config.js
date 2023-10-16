@@ -4,21 +4,16 @@ module.exports = {
   lintOnSave: false,
   devServer: {
     port: 8081,
-    open: true,
+    open: false,
     proxy: {
-      // "/gcs": {
-      //   target: "http://114.215.69.195:80",
-      //   changeOrigin: true,
-      //   ws: false,
-      //   onProxyRes(proxyRes, req, res) {
-      //     //在控制台显示真实代理地址
-      //     const realUrl = new URL(req.url || '',process.env.VUE_APP_BASE_API)?.href || ''
-      //     proxyRes.headers['x-real-url'] = realUrl
-      //   },
-      //   pathRewrite: {
-      //     "^/gcs": ""
-      //   }
-      // }
+      "/apis": {
+        target: "http://www.sinupaas.com",
+        changeOrigin: true,
+        ws: false,
+        pathRewrite: {
+          "^/apis": ""
+        }
+      }
     }
   },
   configureWebpack: {

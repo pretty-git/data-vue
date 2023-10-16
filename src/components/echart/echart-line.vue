@@ -14,7 +14,7 @@
 import * as echarts from 'echarts';
 
 export default {
-    name: 'Line',
+    name: 'Lines',
     data() {
         return {
 

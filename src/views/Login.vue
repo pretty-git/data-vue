@@ -52,26 +52,24 @@ export default {
 					type: 'error',
 				})
 			} else {
-				const timestamp = new Date().getTime();
-				const auth = md5(`${this.userName}${timestamp}${this.userPwd}`)
-				axios.post('http://114.215.69.195:80/gcs/v1/login', {
+				const timestamp = Math.floor(Date.now() / 1000) + '';
+				const auth = md5(`${this.userName}${timestamp}!@#$1234`).toLowerCase()
+				const param = {
 					username: this.userName,
 					timestamp,
 					auth,
-					type: 1,
+					type: '1',
 					veriCode: md5(this.userPwd)
-				})
+				}
+
+
+				this.$api.handleLogin(param)
 					.then(response => {
-						console.log(response, '登录');
-						if (response.code == 200) {
-							this.$store.commit('SET_TOKEN', response.data.token)
-							this.$store.commit('Authorization', auth)
-							this.$router.push({
-								path: '/home'
-							})
-						} else {
-							this.$message.error(response.message)
-						}
+						document.cookie = `SET_TOKEN=${response.data.token}; `;
+						this.$router.push({
+							path: '/home'
+						})
+
 					})
 					.catch(error => {
 						console.error(error);

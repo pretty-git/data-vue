@@ -2,7 +2,7 @@ import { get, post } from './api';
 
 
 export function handleLogin(params) {
-    return post('/v1/login', params)
+    return post('/gcs/v1/login', params)
 
 }
 /**
@@ -12,7 +12,7 @@ export function handleLogin(params) {
  * @returns 获取泊位信息列表
  */
 export function getBerList( params) {
-    return get('/v1/getBerchList', params)
+    return get('/gcs/v1/getBerchList', params)
 }
 
 /**
@@ -22,7 +22,7 @@ export function getBerList( params) {
  * @returns 获取泊位详情信息
  */
 export function getBerDetail( params) {
-    return post('/v1/getBerchDetails', params)
+    return post('/gcs/v1/getBerchDetails', params)
 }
 /**
  * 
@@ -30,7 +30,7 @@ export function getBerDetail( params) {
  * @returns 获取垃圾重量统计数据
  */
 export function getGarbage(params) {
-    return post('/v1/getWeigthStatistics', params)
+    return post('/gcs/v1/getWeigthStatistics', params)
 
 }
 /**
@@ -39,6 +39,6 @@ export function getGarbage(params) {
  * @returns 获取车次数据
  */
 export function getCar(params) {
-    return post('/v1/getTransStatistics', params)
+    return post('/gcs/v1/getTransStatistics', params)
 
 }
