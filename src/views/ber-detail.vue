@@ -77,7 +77,6 @@ import Top from '../components/header/index.vue'
 import Lines from "../components/echart/echart-line.vue"
 import Bar from "../components/echart/bar.vue"
 import Control from '../components/control.vue'
-import { getBerDetail, getGarbage, getCar } from '../config/logic'
 import { berColumns, button } from '../config/column'
 export default {
     components: {
@@ -105,14 +104,14 @@ export default {
             this.tab = item.id
         },
         async getDetail() {
-            this.berObj = await getBerDetail({
+            this.berObj = await this.$api.getBerDetail({
                 berthId: this.$route.query.berthId
             })
-            const { weigth } = await getGarbage({
+            const { weigth } = await this.$api.getGarbage({
                 berthId: this.$route.query.berthId
 
             })
-            const { trans } = await getCar({
+            const { trans } = await this.$api.getCar({
                 berthId: this.$route.query.berthId
             })
             this.chartData = { weigth, trans }

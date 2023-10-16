@@ -21,7 +21,7 @@ const routes = [
     name: 'Home',
     component: () => import('@/views/home.vue'),
     meta: {
-      title: '酷屏首页统计图'
+      title: '中央控制管理系统'
     }
   },
   {

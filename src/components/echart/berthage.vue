@@ -11,23 +11,23 @@
                     <div class="wgxc-name">{{ item.berthId }}号泊位</div>
                     <div class="flex">
                         <div>
-                        <div class="wgxc-bar">
-                            <span class="wgxc-sl-bar" style="height:30%"></span>
-                            <div class="ratio">{{ (item.berthUseCapacity / item.berthTotalCapacity).toFixed(2) }}</div>
+                            <div class="wgxc-bar">
+                                <span class="wgxc-sl-bar" style="height:30%"></span>
+                                <div class="ratio">{{ (item.berthUseCapacity / item.berthTotalCapacity).toFixed(2) }}</div>
+                            </div>
+                            <div class="total-name">总重：{{ item.berthTotalCapacity }}吨</div>
                         </div>
-                        <div class="total-name">总重：{{ item.berthTotalCapacity }}吨</div>
+                        <div style="margin-left: 20px;">
+                            <div class="circle temp">
+                                {{ item.temperature }}°C
+                            </div>
+                            <div class="circle stress">
+                                {{ item.pressure }}
+                            </div>
+                            <div>剩余：{{ item.berthUseCapacity }}吨</div>
+                        </div>
                     </div>
-                   <div style="margin-left: 20px;">
-                    <div class="circle temp">
-                        {{ item.temperature }}°C
-                    </div>
-                    <div class="circle stress">
-                        {{ item.pressure }}
-                    </div>
-                    <div>剩余：{{ item.berthUseCapacity }}吨</div>
-                   </div>
-                    </div>
-                    
+
 
                 </div>
 
@@ -37,7 +37,6 @@
     </div>
 </template>
 <script>
-import {getBerList} from '../../config/logic'
 
 export default {
     name: 'Berth',
@@ -48,16 +47,16 @@ export default {
     },
     async created() {
         this.Authorization = this.$store.state.Authorization
-        this.berList =  await   getBerList()
+        this.berList = await this.$api.getBerList()
     },
-     mounted() {
-        
+    mounted() {
+
     },
     methods: {
-        getBerDetail({berthId}) {
+        getBerDetail({ berthId }) {
             this.$router.push({
-                name:'BerDetail',
-                query:{
+                name: 'BerDetail',
+                query: {
                     berthId
                 }
             })
@@ -90,12 +89,15 @@ export default {
      float: right;
      margin-right: 10px;
  }
-.wgxc-name {
-    margin-bottom: 6px;
-}
-.total-name {
-    margin-top: 12px;
-}
+
+ .wgxc-name {
+     margin-bottom: 6px;
+ }
+
+ .total-name {
+     margin-top: 12px;
+ }
+
  .wgxc-bar {
      width: 100px;
      height: 100px;
@@ -107,14 +109,16 @@ export default {
      border-bottom-right-radius: 8px;
      position: relative;
  }
-.ratio {
-    position: absolute;
-    top: 46%;
-    color: #fff;
-    font-size: 23px;
-    left: 28%;
-    font-weight: bold;
-}
+
+ .ratio {
+     position: absolute;
+     top: 46%;
+     color: #fff;
+     font-size: 23px;
+     left: 28%;
+     font-weight: bold;
+ }
+
  .wgxc-bar .wgxc-sl-bar {
      display: inline-block;
      width: 100%;
@@ -170,33 +174,36 @@ export default {
  }
 
  .circle {
-    border-radius: 50%;
-    width: 45px;
-    height: 45px;
-    color: #fff;
-    text-align: center;
-    line-height: 45px;
-    font-size: 16px;
-    margin: 0 auto 5px;
+     border-radius: 50%;
+     width: 45px;
+     height: 45px;
+     color: #fff;
+     text-align: center;
+     line-height: 45px;
+     font-size: 16px;
+     margin: 0 auto 5px;
  }
+
  .temp {
-    border: 4px solid #e3c615;
+     border: 4px solid #e3c615;
 
  }
+
  .stress {
-    border: 4px solid #e68908;
+     border: 4px solid #e68908;
 
  }
+
  .ber-item {
-    color: #fff;
-    font-size: 16px;
-    width: 45%;
-    text-align: center;
-    margin-bottom: 16px;
+     color: #fff;
+     font-size: 16px;
+     width: 45%;
+     text-align: center;
+     margin-bottom: 16px;
  }
+
  .flex {
-    display: flex;
-    align-items: center;
-    justify-content: center;
- }
-</style>
+     display: flex;
+     align-items: center;
+     justify-content: center;
+ }</style>

@@ -40,6 +40,9 @@ export default {
 			return !(this.userName && this.userPwd);
 		},
 	},
+	mounted() {
+
+	},
 	methods: {
 		async login() {
 
@@ -51,7 +54,7 @@ export default {
 			} else {
 				const timestamp = new Date().getTime();
 				const auth = md5(`${this.userName}${timestamp}${this.userPwd}`)
-				axios.get('https://api.example.com/gcs/v1/login', {
+				axios.post('http://114.215.69.195:80/gcs/v1/login', {
 					username: this.userName,
 					timestamp,
 					auth,
@@ -101,7 +104,6 @@ export default {
 	background: rgb(10, 86, 150);
 	margin: 50vh auto;
 	padding: 35px 30px 25px;
-	box-shadow: 0 0 9px rgba(255, 255, 255, 0.5);
 	border-radius: 10px;
 	transform: translateY(-50%);
 }

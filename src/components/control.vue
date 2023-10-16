@@ -62,7 +62,7 @@
     </div>
 </template>
 <script>
-import { getBerDetail } from '../config/logic'
+
 
 export default {
     data() {
@@ -120,7 +120,7 @@ export default {
         }
     },
     async created() {
-        this.controlStatus = await getBerDetail()
+        this.controlStatus = await this.$api.getBerDetail()
 
     },
     methods: {
