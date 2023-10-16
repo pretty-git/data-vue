@@ -31,7 +31,7 @@
                 <div class="top-data">{{ date.day }} {{ date.date }}</div>
             </div>
 
-            <div class="back" @lick="logout">
+            <div class="back" @click="logout">
                 <i class="iconfont icon-fanhui return-icon"></i>
                 退出
             </div>
@@ -130,10 +130,10 @@ export default {
         }];
         this.date = this.getTime()
 
-       this.timeHandler = setInterval(()=>{
+        this.timeHandler = setInterval(() => {
             this.date = this.getTime()
 
-        },1000)
+        }, 1000)
     }, methods: {
         getTime() {
             const date = new Date();

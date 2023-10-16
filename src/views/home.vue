@@ -3,9 +3,9 @@
         <Top></Top>
         <div class="content">
             <Lines></Lines>
-            <div style="width: 30%;height: 30vh;"></div>
+            <div class="center"></div>
             <Pie></Pie>
-           
+
         </div>
         <div class="content" style="margin-top: 0;">
             <Bar height="35vh"></Bar>
@@ -17,7 +17,7 @@
 </template>
 <script>
 import Top from '../components/header/index.vue'
-import Lines from "../components/echart/lines.vue"
+import Lines from "../components/echart/echart-line.vue"
 import Bar from "../components/echart/bar.vue"
 import Pie from "../components/echart/pie.vue"
 import Ber from "../components/echart/berthage.vue"
@@ -27,7 +27,8 @@ import Table from "../components/echart/table.vue"
 export default {
     components: {
         Top,
-        Lines, Bar,
+        Lines,
+        Bar,
         Pie,
         Ber,
         Table
@@ -39,17 +40,14 @@ export default {
     },
     created() {
     },
-   async mounted() {
-  
+    async mounted() {
+
     }
 
 }
 </script>
 <style scoped lang="scss">
-
 ::v-deep {
-   
-
     .content {
         margin-top: 40px;
         box-sizing: border-box;
@@ -60,19 +58,7 @@ export default {
         justify-content: space-between;
     }
 
-}
-</style>
-<style>
-.main {
-    background: url(../assets/img/bj.jpg);
-    background-size: 100% 100%;
-    height: 100vh;
-    overflow-x: auto;
-    overflow-y: hidden;
-    width: 100%;
-
-}
-.echart-title {
+    .echart-title {
         display: flex;
         align-items: center;
         font-size: 24px;
@@ -80,10 +66,10 @@ export default {
         font-weight: bold;
     }
 
-    .left-icon {
-        height: 28px;
-        width: 4px;
-        background-color: #00deff;
-        margin-right: 12px;
-    }
+}
+
+.center {
+    width: 30%;
+    height: 30vh;
+}
 </style>

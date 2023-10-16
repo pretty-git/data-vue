@@ -33,7 +33,6 @@
                         0).toFixed(2) }} 吨</div>
                     <div>状态：{{ button[current] }}</div>
                 </div>
-
             </div>
 
             <div class="right-main">
@@ -61,12 +60,9 @@
 
         <div class="bottom-main">
             <Control></Control>
-
-
             <div class="bottom-right">
                 <div class="echart-title">
                     <div class="left-icon"></div>图表信息
-
                 </div>
                 <div style="display: flex;align-items: baseline;justify-content: space-around;">
                     <Lines :data="chartData" :show="false" width="40%" :isBorder="false"></Lines>
@@ -74,22 +70,20 @@
                 </div>
             </div>
         </div>
-
-
-
-
     </div>
 </template>
 <script>
 import Top from '../components/header/index.vue'
-import Lines from "../components/echart/lines.vue"
+import Lines from "../components/echart/echart-line.vue"
 import Bar from "../components/echart/bar.vue"
 import Control from '../components/control.vue'
 import { getBerDetail, getGarbage, getCar } from '../config/logic'
+import { berColumns, button } from '../config/column'
 export default {
     components: {
         Top,
-        Lines, Bar,
+        Lines,
+        Bar,
         Control
     },
     data() {
@@ -102,81 +96,8 @@ export default {
         }
     },
     created() {
-        this.button = {
-            0: '正常使用',
-            1: '暂停使用',
-            2: '更换容器'
-        }
-        this.columns = {
-            'garbage': {
-                id: 'garbage',
-                columns: [{
-                    prop: 'id',
-                    label: '序号',
-                }, {
-                    prop: 'time',
-                    label: '时间',
-                }, {
-                    prop: 'location',
-                    label: '位置',
-                }, {
-                    prop: 'weight',
-                    label: '重量（吨）',
-                }, {
-                    prop: 'operate',
-                    label: '操作',
-                }],
-                name: '垃圾倒置查询'
-            },
-            'change': {
-                id: 'change',
-                columns: [{
-                    prop: 'id',
-                    label: '序号',
-
-                }, {
-                    prop: 'time',
-                    label: '时间',
-
-                }, {
-                    prop: 'number',
-                    label: '桶数',
-
-                }, {
-                    prop: 'weight',
-                    label: '重量（吨）',
-
-                }, {
-                    prop: 'operate',
-                    label: '操作',
-
-                }],
-                name: '更换容器查询'
-            },
-            "bug": {
-                id: 'bug',
-                columns: [
-                    {
-                        prop: 'id',
-                        label: '序号',
-
-                    }, {
-                        prop: 'time',
-                        label: '时间',
-
-                    }, {
-                        prop: 'status',
-                        label: '状态',
-
-                    }, {
-                        prop: 'case',
-                        label: '故障情况',
-
-                    },
-                ],
-                name: '报警鼓掌信息查询'
-            }
-        }
+        this.button = button
+        this.columns = berColumns
         this.getDetail()
 
     }, methods: {
@@ -193,7 +114,6 @@ export default {
             })
             const { trans } = await getCar({
                 berthId: this.$route.query.berthId
-
             })
             this.chartData = { weigth, trans }
 
@@ -213,25 +133,8 @@ export default {
     font-weight: bold;
     margin-bottom: 20px;
 }
-
-.left-icon {
-    height: 28px;
-    width: 4px;
-    background-color: #00deff;
-    margin-right: 12px;
-}
 </style>
 <style scoped lang="scss">
-.main {
-    background: url(../assets/img/bj.jpg);
-    background-size: 100% 100%;
-    height: 100vh;
-    overflow-x: auto;
-    overflow-y: hidden;
-    width: 100%;
-
-}
-
 .contents {
     width: 95%;
     margin: 40px auto 0;
@@ -339,45 +242,6 @@ export default {
     font-weight: bold;
 }
 
-::v-deep {
-
-    .el-table {
-        background-color: #203363;
-    }
-
-    .el-table th.el-table__cell {
-        background-color: #203363;
-
-        color: #73f7fa;
-
-    }
-
-    .el-table thead {
-        color: #73f7fa;
-
-    }
-
-    .el-table__header {
-        background-color: #203363;
-        color: #73f7fa;
-        font-size: 18px;
-    }
-
-    .el-table__row {
-        background-color: #203363;
-
-
-        color: #73f7fa;
-    }
-
-    .highlight-row {
-        background-color: #FAD7D7 !important;
-    }
-
-    .el-table--enable-row-hover .el-table__body tr:hover>td.el-table__cell {
-        background-color: #1a5ca5;
-    }
-}
 
 .message {
     font-size: 27px;

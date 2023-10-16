@@ -18,29 +18,21 @@
 			</button>
 
 		</div>
-
-
-
-
-
 	</div>
 </template>
 
 <script>
 
 import md5 from 'md5'
-import { getLogin } from '../config/logic'
-
-
+import axios from 'axios';
 export default {
 	name: 'Login',
 	components: {},
 	data() {
 		return {
-			userName: 'admin',
-			userPwd: '123456',
+			userName: '',
+			userPwd: '',
 			visible: false,
-			modalContent: '这是一段自定义模态框消息'
 		}
 	},
 	computed: {
@@ -48,10 +40,6 @@ export default {
 			return !(this.userName && this.userPwd);
 		},
 	},
-	created() { },
-	mounted() {
-	},
-
 	methods: {
 		async login() {
 
@@ -63,24 +51,31 @@ export default {
 			} else {
 				const timestamp = new Date().getTime();
 				const auth = md5(`${this.userName}${timestamp}${this.userPwd}`)
-				const data = await getLogin({
+				axios.get('https://api.example.com/gcs/v1/login', {
 					username: this.userName,
 					timestamp,
 					auth,
 					type: 1,
 					veriCode: md5(this.userPwd)
 				})
-				this.$store.commit('SET_TOKEN',data.token)
-				this.$store.commit('Authorization',auth)
-
-				
-					this.$router.push({
-					path: '/home'
-				})
-			
+					.then(response => {
+						console.log(response, '登录');
+						if (response.code == 200) {
+							this.$store.commit('SET_TOKEN', response.data.token)
+							this.$store.commit('Authorization', auth)
+							this.$router.push({
+								path: '/home'
+							})
+						} else {
+							this.$message.error(response.message)
+						}
+					})
+					.catch(error => {
+						console.error(error);
+					});
 			}
 		},
-	
+
 	}
 }
 </script>
@@ -102,13 +97,13 @@ export default {
 
 .form {
 	width: 460px;
-    height: auto;
-    background: rgb(10, 86, 150);
-    margin: 50vh auto;
-    padding: 35px 30px 25px;
-    box-shadow: 0 0 9px rgba(255, 255, 255, 0.5);
-    border-radius: 10px;
-    transform: translateY(-50%);
+	height: auto;
+	background: rgb(10, 86, 150);
+	margin: 50vh auto;
+	padding: 35px 30px 25px;
+	box-shadow: 0 0 9px rgba(255, 255, 255, 0.5);
+	border-radius: 10px;
+	transform: translateY(-50%);
 }
 
 .item {

@@ -34,46 +34,38 @@
                     </el-form>
                     <div class="export-btn" style="margin: auto;">查询</div>
                 </div>
-
             </div>
             <div class="right">
                 <el-table :data="tableData" style="width: 100%; " height="75vh">
-                        <template v-for="item of columns[excelObj.type].columns">
-                            <el-table-column :prop="item.prop" :key="item.id" :label="item.label" :width="item.width"
-                                >
-                                <template slot-scope="scope">
-                                    <span v-if="item.prop !== 'operate'">{{ scope[item.prop] }}</span>
-                                    <i class="iconfont icon-delete" v-else></i>
-                                </template>
-                            </el-table-column>
-                        </template>
-                    </el-table>
-                    <el-pagination
-                    class="pagination"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page.sync="currentPage"
-      :page-size="10"
-      background
-      layout="total, prev, pager, next"
-      :total="total">
-    </el-pagination>
+                    <template v-for="item of columns[excelObj.type].columns">
+                        <el-table-column :prop="item.prop" :key="item.id" :label="item.label" :width="item.width">
+                            <template slot-scope="scope">
+                                <span v-if="item.prop !== 'operate'">{{ scope[item.prop] }}</span>
+                                <i class="iconfont icon-delete" v-else></i>
+                            </template>
+                        </el-table-column>
+                    </template>
+                </el-table>
+                <el-pagination class="pagination" @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                    :current-page.sync="currentPage" :page-size="10" background layout="total, prev, pager, next"
+                    :total="total">
+                </el-pagination>
             </div>
         </div>
     </div>
 </template>
 <script>
 import Top from '../components/header/index.vue'
-
+import { columns } from '../config/column'
 export default {
     components: {
         Top
     },
     data() {
         return {
-            currentPage:1,
-            total:100,
-            tableData:[],
+            currentPage: 1,
+            total: 100,
+            tableData: [],
             form: {
                 number: '',
                 startTime: '',
@@ -83,7 +75,10 @@ export default {
                 name: "报表类型",
                 type: 'garbage',
                 arr: [
-                    { id: 'garbage', name: '垃圾倒置查询', },
+                    {
+                        id: 'garbage',
+                        name: '垃圾倒置查询',
+                    },
                     {
                         id: 'car',
                         name: '车辆信息查询'
@@ -93,89 +88,11 @@ export default {
                     }]
             },
         }
-    }
-    ,created() {
-        this.columns = {
-            'garbage': {
-                id: 'garbage',
-                columns: [{
-                    prop: 'id',
-                    label: '序号',
-                }, {
-                    prop: 'time',
-                    label: '车牌号',
-                }, {
-                    prop: 'location',
-                    label: '车重（/吨）',
-                }, {
-                    prop: 'weight1',
-                    label: '所属泊位',
-                },  {
-                    prop: 'weight2',
-                    label: '货重（/吨）',
-                }, {
-                    prop: 'weight3',
-                    label: '垃圾总重（/吨）',
-                },  {
-                    prop: 'weight4',
-                    label: '时间',
-                },  {
-                    prop: 'operate',
-                    label: '操作',
-                }],
-                name: '垃圾倒置查询'
-            },
-            'change': {
-                id: 'change',
-                columns: [{
-                    prop: 'id',
-                    label: '序号',
-
-                }, {
-                    prop: 'time',
-                    label: '时间',
-
-                }, {
-                    prop: 'number',
-                    label: '位置',
-
-                }, {
-                    prop: 'weight',
-                    label: '货重（吨）',
-
-                }, {
-                    prop: 'operate',
-                    label: '操作',
-
-                }],
-                name: '更换容器查询'
-            },
-            "car": {
-                id: 'bug',
-                columns: [
-                    {
-                        prop: 'id',
-                        label: '序号',
-
-                    }, {
-                        prop: 'time',
-                        label: '时间',
-
-                    }, {
-                        prop: 'status',
-                        label: '状态',
-
-                    }, {
-                        prop: 'case',
-                        label: '故障情况',
-
-                    },
-                ],
-                name: '车辆信息查询'
-            }
-        }
     },
-    
+    created() {
+        this.columns = columns
+    },
+
     methods: {
         getTime(item) {
             this.excelObj.type = item.id
@@ -195,8 +112,10 @@ export default {
     height: 80vh;
     border-radius: 10px;
     border: 2px solid #63b5cf;
-    margin-left: 46px;
+    margin-left: 4vh;
     margin-top: 8vh;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .choose-list {
@@ -206,22 +125,14 @@ export default {
 
 .title {
     background-color: #4b7aaf;
-    padding: 25px 44px;
+    padding: 2vh 44px;
     color: #fff;
     font-size: 18px;
     border-bottom: 2px solid #63b5cf;
 
 }
 
-.main {
-    background: url(../assets/img/bj.jpg);
-    background-size: 100% 100%;
-    height: 100vh;
-    overflow-x: auto;
-    overflow-y: hidden;
-    width: 100%;
 
-}
 
 .choose-item {
     padding: 2vh 40px;
@@ -243,14 +154,14 @@ export default {
 .export {
     display: flex;
     align-items: center;
-    padding-left: 50px;
-    margin: 32px 0;
+    padding-left: 5vh;
+    margin: 3vh 0;
 }
 
 .export-btn {
     width: 100px;
-    height: 44px;
-    line-height: 44px;
+    height: 5vh;
+    line-height: 5vh;
     text-align: center;
     color: #083e86cf;
     background-color: #20b7aa;
@@ -258,63 +169,64 @@ export default {
     border-radius: 12px;
     font-weight: bold;
     cursor: pointer;
-    margin-left: 16px;
+    margin-left: 2vh;
 }
 
 .form {
     margin: 5vh 0 4vh;
     padding-left: 12px;
 }
+
 ::v-deep {
     .el-form-item__label {
         color: #fff;
     }
-  
-  .el-table {
-      background-color: #203363;
-  }
 
-  .el-table th.el-table__cell {
-      background-color: #203363;
+    .el-table {
+        background-color: #203363;
+    }
 
-      color: #73f7fa;
+    .el-table th.el-table__cell {
+        background-color: #203363;
+        color: #73f7fa;
 
-  }
+    }
 
-  .el-table thead {
-      color: #73f7fa;
+    .el-table thead {
+        color: #73f7fa;
 
-  }
+    }
 
-  .el-table__header {
-      background-color: #203363;
-      color: #73f7fa;
-      font-size: 18px;
-  }
+    .el-table__header {
+        background-color: #203363;
+        color: #73f7fa;
+        font-size: 18px;
+    }
 
-  .el-table__row {
-      background-color: #203363;
+    .el-table__row {
+        background-color: #203363;
+        color: #73f7fa;
+    }
 
+    .highlight-row {
+        background-color: #FAD7D7 !important;
+    }
 
-      color: #73f7fa;
-  }
+    .el-table--enable-row-hover .el-table__body tr:hover>td.el-table__cell {
+        background-color: #1a5ca5;
+    }
 
-  .highlight-row {
-      background-color: #FAD7D7 !important;
-  }
-
-  .el-table--enable-row-hover .el-table__body tr:hover>td.el-table__cell {
-      background-color: #1a5ca5;
-  }
-  .el-pagination__total {
-    color: #fff;
-  }
+    .el-pagination__total {
+        color: #fff;
+    }
 }
+
 .right {
     width: 75%;
     margin-top: 8vh;
     margin-left: 5%;
 }
+
 .pagination {
     margin-top: 3vh;
     display: flex;

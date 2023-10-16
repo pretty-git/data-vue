@@ -158,12 +158,7 @@ export default {
     margin-bottom: 20px;
 }
 
-.left-icon {
-    height: 28px;
-    width: 4px;
-    background-color: #00deff;
-    margin-right: 12px;
-}
+
 
 ::v-deep {
     .el-form-item__label {

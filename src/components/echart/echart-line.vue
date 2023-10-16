@@ -1,12 +1,12 @@
 <template>
-    <div class="lines" :style="{ width: width}">
+    <div class="lines" :style="{ width: width }">
         <div class="echart-title" v-show="show">
             <div class="left-icon"></div>图表信息折线图
         </div>
-        <dv-border-box-10 style="width: 100%;" v-if="isBorder" :style="{ height:height }">
-            <div class="chart" :style="{ height:height }" id="chart_left1"></div>
+        <dv-border-box-10 style="width: 100%;" v-if="isBorder" :style="{ height: height }">
+            <div class="chart" :style="{ height: height }" id="chart_left1"></div>
         </dv-border-box-10>
-        <div class="chart" :style="{ height:height }" id="chart_left1" v-else></div>
+        <div class="chart" :style="{ height: height }" id="chart_left1" v-else></div>
 
     </div>
 </template>
@@ -14,7 +14,7 @@
 import * as echarts from 'echarts';
 
 export default {
-    name: 'Lines',
+    name: 'Line',
     data() {
         return {
 
@@ -33,13 +33,13 @@ export default {
             type: String,
             default: '25%'
         },
-        height:{
+        height: {
             type: String,
             default: '35vh'
         },
-        data:{
-            type:Object,
-            default:()=>null
+        data: {
+            type: Object,
+            default: () => null
         }
     },
 
@@ -53,16 +53,12 @@ export default {
     },
     methods: {
         getEchartLeft1(data) {
-            const garbage = data.weigth.map(item=>item.weigth)
-            const car = data.trans.map(item=>item.number)
-           
+            const garbage = data.weigth.map(item => item.weigth)
+            const car = data.trans.map(item => item.number)
+
             let myChart = echarts.init(document.getElementById('chart_left1'));
 
             let option = {
-
-                tooltip: {
-                    trigger: 'axis'
-                },
                 legend: {
                     right: '5%',
                     data: ['垃圾重量（吨）', '进站车次（次）'],
@@ -70,7 +66,7 @@ export default {
                         color: '#ffffff'  // 将x坐标轴文字颜色设置为白色
                     },
                     type: 'scroll',
-    orient: 'vertical',
+                    orient: 'vertical',
                 },
 
                 grid: {
@@ -83,16 +79,16 @@ export default {
                 xAxis: {
                     type: 'category',
                     boundaryGap: false,
-                    data: data.weigth.map(item=>item.index),
+                    data: data.weigth.map(item => item.index),
                     axisLabel: {
                         textStyle: {
                             color: '#ffffff'  // 将x坐标轴文字颜色设置为白色
                         }
                     },
-                    axisLine:{
-                        show:true,
-                        lineStyle:{
-                            color:'#00deff'
+                    axisLine: {
+                        show: true,
+                        lineStyle: {
+                            color: '#00deff'
                         }
                     }
                 },
@@ -103,16 +99,16 @@ export default {
                             color: '#ffffff'  // 将x坐标轴文字颜色设置为白色
                         }
                     },
-                    splitLine:{
-                        show:true,
-                        lineStyle:{
-                            color:'#00deff'
+                    splitLine: {
+                        show: true,
+                        lineStyle: {
+                            color: '#00deff'
                         },
                     },
-                    axisLine:{
-                        show:true,
-                        lineStyle:{
-                            color:'#fff'
+                    axisLine: {
+                        show: true,
+                        lineStyle: {
+                            color: '#fff'
                         }
                     }
                 },

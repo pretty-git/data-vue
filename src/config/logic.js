@@ -1,8 +1,4 @@
 import { get, post } from './api';
-export function getLogin( params) {
-    return post('/gcs/v1/login', params)
-    
-}
 
 /**
  * 
