@@ -1,9 +1,12 @@
 <template>
     <div class="bar" :style="{ width: width }">
-        <div class="echart-title" v-show="show">
+        <div class="echart-title" v-if="show">
             <div class="left-icon"></div>图表信息柱体图
         </div>
-        <dv-border-box-10 style="width: 100%;" v-if="isBorder" :style="{ height: `${height + 3}vh` }">
+        <dv-border-box-10 style="width: 100%;" v-if="isBorder" :style="{ height: `${height + 4}vh` }">
+            <div class="echart-title pl-12">
+                <div class="left-icon"></div>图表信息柱体图
+            </div>
             <div class="chart" :style="{ height: `${height}vh` }" id="chart_left2"></div>
         </dv-border-box-10>
         <div class="chart" :style="{ height: `${height}vh` }" id="chart_left2" v-else></div>
@@ -25,7 +28,7 @@ export default {
             default: true
         }, width: {
             type: String,
-            default: '25%'
+            default: '35%'
         }, height: {
             type: Number,
             default: 35
@@ -67,11 +70,12 @@ export default {
             let series = []
             const date = new Date()
             const timeObj = {
-                0: `${date.getHours()}:`,
+                0: ``,
                 1: `${date.getMonth() + 1}-`,
                 2: `${date.getFullYear()}-`,
             }
-            let xAxisData = data.weigth.map(item => `${timeObj[this.unit]}${item.index < 10 ? `0${item.index}` : item.index}`)
+            const dp = this.unit === 0 ? '时' : ''
+            let xAxisData = data.weigth.map(item => `${timeObj[this.unit]}${item.index < 10 ? `0${item.index}` : item.index}${dp}`)
 
             if (garbage.length > 0) {
                 series.push({
@@ -107,7 +111,7 @@ export default {
                         color: '#405289', // 设置每个柱子的颜色
                     } // 数据2的值
                 })
-                xAxisData = data.trans.map(item => `${timeObj[this.unit]}${item.index < 10 ? `0${item.index}` : item.index}`)
+                xAxisData = data.trans.map(item => `${timeObj[this.unit]}${item.index < 10 ? `0${item.index}` : item.index}${dp}`)
             }
             let option = {
 
@@ -149,7 +153,7 @@ export default {
                 grid: {
                     left: '3%',
                     right: '4%',
-                    bottom: '3%',
+                    bottom: '12%',
                     containLabel: true
                 },
                 legend: {
@@ -172,9 +176,7 @@ export default {
     }
 }
 </script>
-<style lang="scss" scoped> .bar {
-     min-width: 600px;
- }
+<style lang="scss" scoped> .bar {}
 
  .chart {
      width: 100%;
@@ -188,5 +190,10 @@ export default {
          margin-top: 12px;
 
      }
+ }
+
+ .pl-12 {
+     padding-left: 12px;
+     padding-top: 12px;
  }
 </style>

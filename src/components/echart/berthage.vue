@@ -1,7 +1,7 @@
 <template>
     <div class="berth">
 
-        <dv-border-box-10 style="width: 100%;height: 40vh;">
+        <dv-border-box-10 style="width: 100%;height: 43vh;">
             <div class="echart-title">
                 <div class="left-icon"></div>泊位信息
             </div>
@@ -26,7 +26,7 @@
                             <div class="circle stress">
                                 {{ item.pressure }}
                             </div>
-                            <div class="total-name">剩余：{{ getNumber(item.capacity - item.used_capacity) }}吨</div>
+                            <div class="fs-12">剩余：{{ getNumber(item.capacity - item.used_capacity) }}吨</div>
                         </div>
                     </div>
                 </div>
@@ -74,8 +74,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped> .berth {
-     width: 35%;
-     min-width: 600px;
+     width: 28%;
  }
 
  .echart-title {
@@ -86,7 +85,7 @@ export default {
 
  ::v-deep {
      .dv-border-box-10 .border-box-content {
-         padding: 18px 0;
+         padding: 10px 0 0;
          margin-top: 12px;
 
      }
@@ -100,17 +99,23 @@ export default {
  }
 
  .wgxc-name {
-     margin-bottom: 14px;
-     font-size: 21px;
+     font-size: 20px;
+     font-weight: bold;
+     margin-bottom: 6px;
  }
 
  .total-name {
-     margin-top: 24px;
+     margin-top: 16px;
+     font-size: 12px;
+ }
+
+ .fs-12 {
+     font-size: 12px;
  }
 
  .wgxc-bar {
-     width: 100px;
-     height: 110px;
+     width: 80px;
+     height: 80px;
      position: relative;
      border-top-left-radius: 13px;
      border-top-right-radius: 13px;
@@ -145,7 +150,7 @@ export default {
 
  .wgxc-bar .wgxc-sl-bar:before {
      content: '';
-     width: 100px;
+     width: 80px;
      background-color: #0093ff;
      border-radius: 50%;
      height: 15px;
@@ -156,7 +161,7 @@ export default {
 
  .wgxc-bar:before {
      content: '';
-     width: 100px;
+     width: 80px;
      background-color: #1562aa;
      border-radius: 50%;
      height: 19px;
@@ -168,7 +173,7 @@ export default {
 
  .wgxc-bar:after {
      content: '';
-     width: 100px;
+     width: 80px;
      background-color: #1984d8;
      border-radius: 50%;
      height: 15px;
@@ -178,7 +183,7 @@ export default {
  }
 
  .bar-main {
-     margin-top: 46px;
+     margin-top: 35px;
      display: flex;
      flex-wrap: wrap;
      justify-content: center;
@@ -190,11 +195,11 @@ export default {
 
  .circle {
      border-radius: 50%;
-     width: 45px;
-     height: 45px;
+     width: 35px;
+     height: 35px;
      color: #fff;
      text-align: center;
-     line-height: 45px;
+     line-height: 35px;
      font-size: 16px;
      margin: 0 auto 5px;
  }
@@ -214,11 +219,12 @@ export default {
      font-size: 16px;
      width: 45%;
      text-align: center;
-     margin-bottom: 16px;
+     margin-bottom: 6px;
  }
 
  .flex {
      display: flex;
      align-items: center;
      justify-content: center;
- }</style>
+ }
+</style>

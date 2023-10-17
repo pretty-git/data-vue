@@ -19,7 +19,7 @@
                     <div class="title" style="font-size: 22px;">
                         查询条件
                     </div>
-                    <el-form class="form" label-width="80px" :mode="form">
+                    <el-form class="form" label-width="100px" :mode="form">
                         <el-form-item label="车牌号码">
                             <el-input style="width: 180px;" v-model="form.number" placeholder="车牌号码"></el-input>
                         </el-form-item>
@@ -125,7 +125,7 @@ export default {
 
 .title {
     background-color: #4b7aaf;
-    padding: 2vh 44px;
+    padding: 20px 44px;
     color: #fff;
     font-size: 18px;
     border-bottom: 2px solid #63b5cf;
@@ -155,11 +155,11 @@ export default {
     display: flex;
     align-items: center;
     padding-left: 5vh;
-    margin: 3vh 0;
+    margin: 20px 0;
 }
 
 .export-btn {
-    width: 100px;
+    width: 80px;
     height: 5vh;
     line-height: 5vh;
     text-align: center;
@@ -222,9 +222,9 @@ export default {
 }
 
 .right {
-    width: 75%;
+    width: calc(100% - 400px);
     margin-top: 8vh;
-    margin-left: 5%;
+    margin-left: 50px;
 }
 
 .pagination {

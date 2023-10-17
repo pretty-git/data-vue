@@ -26,10 +26,10 @@
                 </div>
             </div>
             <div class="right">
-                <Lines width="100%" :unit="unit" :height="80" :data="data" :isBorder="false"
+                <Lines width="100%" :unit="unit" :height="85" :data="data" :isBorder="false"
                     v-if="options['type'].type === 'line'">
                 </Lines>
-                <Bar width="100%" :unit="unit" :height="80" :data="data" :isBorder="false" v-else></Bar>
+                <Bar width="100%" :unit="unit" :height="85" :data="data" :isBorder="false" v-else></Bar>
             </div>
         </div>
 
@@ -103,7 +103,7 @@ export default {
             this.timeObj.type = item.id
             this.handleSearch()
         },
-        getOPtions(value) {
+        getOPtions() {
             this.handleSearch()
         },
         async handleSearch() {
@@ -160,7 +160,7 @@ export default {
 
 .title {
     background-color: #4b7aaf;
-    padding: 3vh 44px;
+    padding: 20px 44px;
     color: #fff;
     font-size: 22px;
     border-bottom: 2px solid #63b5cf;
@@ -169,7 +169,7 @@ export default {
 
 
 .choose-item {
-    padding: 25px 40px;
+    padding: 20px 40px;
     font-size: 18px;
     color: #fff !important;
     cursor: pointer;

@@ -5,9 +5,9 @@
             <img class="left-img" src="../../assets//img/logo.png">
         </div>
         <div class="center flex ">
-            <dv-decoration-8 style="width:250px;height:40px;" />
+            <dv-decoration-8 class="decoration" />
             <div class="top-title">中央控制管理系统</div>
-            <dv-decoration-8 :reverse="true" style="width:250px;height:40px;" />
+            <dv-decoration-8 :reverse="true" class="decoration" />
         </div>
         <div class="right topBar">
             <div class="flex admin-content" @click="changePassword">
@@ -58,7 +58,7 @@
                 </el-form>
             </div>
             <div v-else-if="status === 'control'">
-                <Control></Control>
+                <Control width="100%"></Control>
             </div>
             <div v-else>
                 <div v-for="item of waterList" :key="item.id" class="water-item">
@@ -210,8 +210,7 @@ export default {
      width: 100%;
      padding: 0 2%;
      margin: 0 auto;
-     justify-content: space-between;
-     height: 80px;
+     height: 8vh;
      box-sizing: border-box;
      box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1), 0 2px 2px rgba(0, 0, 0, 0.06);
      position: relative;
@@ -253,7 +252,7 @@ export default {
  .topBar .time {
      text-align: center;
      color: #fff;
-     margin-right: 24px;
+     width: 25%;
  }
 
  .top-time {
@@ -264,7 +263,7 @@ export default {
  }
 
  .top-data {
-     font-size: 14px;
+     font-size: 12px;
  }
 
  .topBar .company {
@@ -332,45 +331,44 @@ export default {
      cursor: pointer;
 
      .left-img {
-         width: 188px;
-         height: 50px;
+         width: 45%;
 
 
      }
  }
 
  .center {
-     width: 50%;
+     width: 45%;
      justify-content: center;
-     min-width: 1000px;
  }
 
  .right {
-     width: 25%;
-     min-width: 500px;
+     width: 30%;
      display: flex;
      align-items: center;
      color: #fff;
-     justify-content: right;
+     justify-content: space-around;
  }
 
  .top-title {
-     font-size: 32px;
+     font-size: 28px;
      font-weight: bold;
      color: #00deff;
-     margin: 0 62px;
+     width: 40%;
+     text-align: center;
+
  }
 
  .el-dropdown-link {
-     font-size: 30px;
+     font-size: 28px;
      color: #00f5ff;
      font-weight: bold;
-
-     margin-right: 32px;
+     margin-right: 5px;
  }
 
  .admin-content {
-     margin-right: 22px;
+     margin-left: 6%;
+     width: 30%;
      border-right: 3px solid #13417e;
 
  }
@@ -385,21 +383,23 @@ export default {
  }
 
  .admin-name {
-     margin: 0 24px 0 14px;
-     font-size: 16px;
+     margin: 0 10%;
+     font-size: 12px;
  }
 
  .return-icon {
-     font-size: 20px;
+     font-size: 16px;
      color: #00deff;
  }
 
  .back {
      background-color: #0e2f4a;
      border-radius: 20px;
-     padding: 8px 16px;
-     font-size: 18px;
+     padding: 8px 0;
+     font-size: 20px;
      cursor: pointer;
+     width: 20%;
+     text-align: center;
  }
 
  ::v-deep {
@@ -451,5 +451,10 @@ export default {
      display: flex;
      align-items: center;
      margin-left: 24px;
+ }
+
+ .decoration {
+     width: 30% !important;
+     height: 40px !important;
  }
 </style>

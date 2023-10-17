@@ -6,7 +6,7 @@
                 <div class="echart-title">
                     <div class="left-icon"></div>{{ berObj.berthId }}号泊位信息
                 </div>
-                <div class="flex">
+                <div class="flex mt-12">
                     <div class="left">
                         <div class="circle-t">
                             {{ (berObj.berthUseCapacity / berObj.berthTotalCapacity).toFixed(2) }} %
@@ -28,8 +28,8 @@
                     </div>
                 </div>
                 <div class="message">
-                    <div style="width: 50%; margin-bottom: 12px;">总重：{{ berObj.berthTotalCapacity || 0 }}/ 吨</div>
-                    <div style="width: 50%;">剩余： {{ (berObj.berthTotalCapacity || 0 - berObj.berthUseCapacity ||
+                    <div style="width: 55%; margin-bottom: 12px;">总重：{{ berObj.berthTotalCapacity || 0 }}/ 吨</div>
+                    <div style="width: 45%;">剩余： {{ (berObj.berthTotalCapacity || 0 - berObj.berthUseCapacity ||
                         0).toFixed(2) }} 吨</div>
                     <div>状态：{{ button[current] }}</div>
                 </div>
@@ -65,8 +65,8 @@
                     <div class="left-icon"></div>图表信息
                 </div>
                 <div style="display: flex;align-items: baseline;justify-content: space-around;">
-                    <Lines :data="chartData" :height="40" :show="false" width="40%" :isBorder="false"></Lines>
-                    <Bar :data="chartData" :height="40" :show="false" width="40%" :isBorder="false"></Bar>
+                    <Lines :data="chartData" :height="36" :show="false" width="48%" :isBorder="false"></Lines>
+                    <Bar :data="chartData" :height="36" :show="false" width="48%" :isBorder="false"></Bar>
                 </div>
             </div>
         </div>
@@ -136,13 +136,12 @@ export default {
     font-size: 24px;
     color: #fff;
     font-weight: bold;
-    margin-bottom: 20px;
 }
 </style>
 <style scoped lang="scss">
 .contents {
     width: 95%;
-    margin: 40px auto 0;
+    margin: 30px auto 0;
     display: flex;
 }
 
@@ -155,10 +154,10 @@ export default {
 .circle-t {
     border-radius: 50%;
     border: 18px solid red;
-    width: 180px;
-    height: 180px;
+    width: 150px;
+    height: 150px;
     text-align: center;
-    line-height: 180px;
+    line-height: 150px;
     font-size: 26px;
     color: #fff;
     margin: auto;
@@ -167,10 +166,10 @@ export default {
 .circle-l {
     border-radius: 50%;
     border: 10px solid #e3c615;
-    width: 80px;
-    height: 80px;
+    width: 70px;
+    height: 70px;
     text-align: center;
-    line-height: 80px;
+    line-height: 70px;
     font-size: 14px;
     color: #fff;
 }
@@ -197,6 +196,9 @@ export default {
     margin-bottom: 24px;
 }
 
+.mt-12 {
+    margin-top: 12px;
+}
 
 .left {
     width: 40%;
@@ -231,7 +233,7 @@ export default {
 }
 
 .tab-item {
-    font-size: 28px;
+    font-size: 22px;
     color: #00deff;
     cursor: pointer;
 }
@@ -243,13 +245,13 @@ export default {
 
 .tab-active {
     color: #74fafd !important;
-    font-size: 32px;
+    font-size: 26px;
     font-weight: bold;
 }
 
 
 .message {
-    font-size: 27px;
+    font-size: 20px;
     color: #74fafd !important;
     font-weight: bold;
     display: flex;
@@ -262,13 +264,13 @@ export default {
 
 .bottom-main {
     width: 95%;
-    margin: 6vh auto 0;
+    margin: 3vh auto 0;
     display: flex;
-    margin-top: 48px;
+    justify-content: space-between;
 }
 
 .bottom-right {
-    width: 70%;
+    width: 58%;
 }
 
 ::v-deep {

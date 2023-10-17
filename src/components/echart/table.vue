@@ -1,12 +1,12 @@
 <template>
     <div class="table">
 
-        <dv-border-box-10 style="width: 100%;height: 40vh;">
+        <dv-border-box-10 style="width: 100%;height: 43vh;">
             <div class="echart-title">
                 <div class="left-icon"></div>车辆进出站信息
             </div>
             <div class="bar-main">
-                <dv-scroll-board :config="config" style="width:90%;height:30vh;margin: 12px auto;" />
+                <dv-scroll-board :config="config" style="width:90%;height:35vh;margin: 12px auto;" />
             </div>
         </dv-border-box-10>
     </div>
@@ -46,7 +46,6 @@ export default {
 </script>
 <style lang="scss" scoped> .table {
      width: 35%;
-     min-width: 600px;
  }
 
  .echart-title {
@@ -56,7 +55,7 @@ export default {
 
  ::v-deep {
      .dv-border-box-10 .border-box-content {
-         padding: 18px 0;
+         padding: 10px 0 0;
          margin-top: 12px;
 
      }

@@ -1,7 +1,7 @@
 <template>
     <div class="main">
         <Top></Top>
-        <div class="content">
+        <div class="content mt-20 ">
             <Lines :data="chartData" :unit="0"></Lines>
             <div class="center">
                 <img src="../assets//img/center.png">
@@ -10,7 +10,7 @@
 
         </div>
         <div class="content">
-            <Bar :height="35" :data="chartData" :unit="0"></Bar>
+            <Bar :height="39" :show="false" :data="chartData" :unit="0"></Bar>
             <Ber></Ber>
             <Table></Table>
         </div>
@@ -58,16 +58,16 @@ export default {
     methods: {
         async getDetail() {
             const date = new Date();
-            const subtime = date.getFullYear() + String(date.getMonth() + 1).padStart(2, '0')
+            const subtime = date.getFullYear() + String(date.getMonth() + 1).padStart(2, '0') + String(date.getDate()).padStart(2, '0')
             const { data: weigth } = await this.$api.getGarbage({
                 berthId: '',
                 subtime,
-                "statType": 1
+                "statType": 0
             })
             const { data: trans } = await this.$api.getCar({
                 berthId: '',
                 subtime,
-                "statType": 1
+                "statType": 0
             })
             this.chartData = { weigth: weigth || [], trans: trans || [] }
 
@@ -77,9 +77,14 @@ export default {
 }
 </script>
 <style scoped lang="scss">
+.mt-20 {
+    margin-top: 20px;
+}
+
 ::v-deep {
+
     .content {
-        margin-top: 35px;
+
         box-sizing: border-box;
         padding: 0 40px;
         width: 100%;
@@ -101,8 +106,8 @@ export default {
 .center {
     width: 20%;
     margin: auto;
-    // height: 30vh;
 }
+
 .center>img {
     width: 100%;
     height: 100%;

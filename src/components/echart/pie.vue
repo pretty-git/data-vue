@@ -43,14 +43,16 @@ export default {
             let myChart = echarts.init(document.getElementById('chart_left3'));
             const date = new Date()
             const timeObj = {
-                0: `${date.getHours()}:`,
+                0: ``,
                 1: `${date.getMonth() + 1}-`,
                 2: `${date.getFullYear()}-`,
             }
+            const dp = this.unit === 0 ? '时' : ''
+
             const data = value.map(item => {
                 return {
                     value: item.weigth,
-                    name: `${timeObj[this.unit]}${item.index < 10 ? `0${item.index}` : item.index}`
+                    name: `${timeObj[this.unit]}${item.index < 10 ? `0${item.index}` : item.index}${dp}`
                 }
             })
             let option = {

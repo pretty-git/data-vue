@@ -31,7 +31,7 @@ export default {
         },
         width: {
             type: String,
-            default: '25%'
+            default: '35%'
         },
         height: {
             type: Number,
@@ -67,12 +67,14 @@ export default {
             let series = []
             const date = new Date()
             const timeObj = {
-                0: `${date.getHours()}:`,
+                0: ``,
                 1: `${date.getMonth() + 1}-`,
                 2: `${date.getFullYear()}-`,
             }
+            const dp = this.unit === 0 ? '时' : ''
+
             let myChart = echarts.init(document.getElementById('chart_left1'));
-            let xAxisData = data.weigth.map(item => `${timeObj[this.unit]}${item.index < 10 ? `0${item.index}` : item.index}`)
+            let xAxisData = data.weigth.map(item => `${timeObj[this.unit]}${item.index < 10 ? `0${item.index}` : item.index}${dp}`)
             if (garbage.length > 0) {
                 series.push(
                     {
@@ -128,7 +130,7 @@ export default {
                         }
                     }
                 )
-                xAxisData = data.trans.map(item => `${timeObj[this.unit]}${item.index < 10 ? `0${item.index}` : item.index}`)
+                xAxisData = data.trans.map(item => `${timeObj[this.unit]}${item.index < 10 ? `0${item.index}` : item.index}${dp}`)
 
             }
             console.log(series)
@@ -146,7 +148,7 @@ export default {
                 grid: {
                     left: '3%',
                     right: '4%',
-                    bottom: '3%',
+                    bottom: '12%',
                     containLabel: true
                 },
 
@@ -199,7 +201,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 .lines {
-    min-width: 600px;
+    width: 40%;
+    // min-width: 600px;
 }
 
 .chart {

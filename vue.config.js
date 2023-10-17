@@ -1,7 +1,16 @@
+// 引入等比适配插件
+const px2rem = require('postcss-px2rem')
+
+// 配置基本大小
+const postcss = px2rem({
+  // 这里的16是默认的基准，因为根元素字体的默认大小就是16
+  remUnit: 16
+})
+
 module.exports = {
   publicPath: process.env.NODE_ENV === "production" ? "/vueDataV/" : "/",
   productionSourceMap: false,
-  lintOnSave: false,
+  lintOnSave: true,
   devServer: {
     port: 8081,
     open: false,
@@ -22,6 +31,15 @@ module.exports = {
      'jquery' : '$',
      'echarts': 'echarts',
      'axios' : 'axios'
+    }
+  },
+  css: {
+    loaderOptions: {
+      postcss: {
+        plugins: [
+          postcss
+        ]
+      }
     }
   }
 };

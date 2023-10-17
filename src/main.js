@@ -8,7 +8,7 @@ import '@/assets/styles/base.scss'
 import '@/assets/styles/common.scss'
 import '@/assets/iconfont/iconfont.css'
 import dataV from '@jiaminghi/data-view'
-
+import '../rem';
 Vue.use(dataV)
 Vue.use(vueParticles)
 import ElementUI from 'element-ui';
