@@ -13,9 +13,12 @@
                         <div>
                             <div class="wgxc-bar">
                                 <div class="wgxc-sl-bar"
-                                    :style="{ height: `${getHeight(item.used_capacity, item.capacity) > 100 ? 90 : getHeight(item.used_capacity, item.capacity) - 10}%`, backgroundColor: getHeight(item.used_capacity, item.capacity) > 0.8 ? 'red' : '#3261c9' }">
+                                    :style="{ height: `${getHeight(item.used_capacity, item.capacity) > 100 ? 90 : getHeight(item.used_capacity, item.capacity) - 10}%`, backgroundColor: getHeight(item.used_capacity, item.capacity) > 80 ? 'red' : '#3261c9' }">
                                 </div>
                                 <div class="ratio">{{ getHeight(item.used_capacity, item.capacity) }}%</div>
+                                <div class="bar-bottom"
+                                    :style="{ backgroundColor: getHeight(item.used_capacity, item.capacity) > 80 ? 'red' : '#3261c9' }">
+                                </div>
                             </div>
                             <div class="total-name">总重：{{ item.capacity }}吨</div>
                         </div>
@@ -129,7 +132,7 @@ export default {
      position: absolute;
      top: 46%;
      color: #fff;
-     font-size: 23px;
+     font-size: 18px;
      left: 50%;
      font-weight: bold;
      transform: translateX(-50%);
@@ -141,7 +144,7 @@ export default {
      height: 0;
      z-index: 0;
      position: absolute;
-     bottom: 8px;
+     bottom: 4px;
      background-color: #3261c9;
      border-top-left-radius: 7px;
      border-top-right-radius: 7px;
@@ -171,8 +174,7 @@ export default {
      z-index: 999;
  }
 
- .wgxc-bar:after {
-     content: '';
+ .bar-bottom {
      width: 80px;
      background-color: #1984d8;
      border-radius: 50%;
@@ -181,6 +183,8 @@ export default {
      bottom: -3px;
      left: 0px;
  }
+
+
 
  .bar-main {
      margin-top: 35px;
@@ -204,11 +208,14 @@ export default {
 
  .temp {
      border: 4px solid #e3c615;
+     font-size: 12px;
 
  }
 
  .stress {
      border: 4px solid #e68908;
+     font-size: 12px;
+
 
  }
 

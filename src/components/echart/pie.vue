@@ -22,7 +22,7 @@ export default {
             default: () => []
         }, unit: {
             type: Number,
-            default: 1
+            default: 0
         }
     },
     watch: {
@@ -67,12 +67,19 @@ export default {
                     left: 'right',
                     align: 'left'
                 },
+                grid: {
+                    left: '1%',
+                    right: '1%',
+                    bottom: '3%',
+                    containLabel: true
+                },
                 markLine: { label: false },
                 series: [
                     {
                         name: '垃圾重量图表',
                         type: 'pie',
                         radius: '90%',
+                        center: ['30%', '50%'],
                         label: {
                             show: false
                         },
