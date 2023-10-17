@@ -188,8 +188,6 @@ export default {
      flex-wrap: wrap;
      justify-content: center;
      width: 100%;
-     overflow-y: auto;
-     overflow-x: hidden;
      height: 87%;
  }
 

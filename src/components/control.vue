@@ -105,7 +105,7 @@ export default {
             default: () => { }
         }, width: {
             type: String,
-            default: '40%'
+            default: '35%'
         }
     }, watch: {
         data: {

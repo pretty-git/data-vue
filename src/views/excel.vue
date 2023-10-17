@@ -114,8 +114,6 @@ export default {
     border: 2px solid #63b5cf;
     margin-left: 4vh;
     margin-top: 8vh;
-    overflow-y: auto;
-    overflow-x: hidden;
 }
 
 .choose-list {
