@@ -46,7 +46,7 @@ export default {
     async created() {
         this.Authorization = this.$store.state.Authorization
         const { data } = await this.$api.getBerList()
-        this.berList = data.concat(data).concat(data)
+        this.berList = data
     },
     mounted() {
 
