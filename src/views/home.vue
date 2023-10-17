@@ -3,7 +3,9 @@
         <Top></Top>
         <div class="content">
             <Lines :data="chartData" :unit="0"></Lines>
-            <div class="center"></div>
+            <div class="center">
+                <img src="../assets//img/center.png">
+            </div>
             <Pie :data="chartData.weigth"></Pie>
 
         </div>
@@ -97,7 +99,12 @@ export default {
 }
 
 .center {
-    width: 30%;
-    height: 30vh;
+    width: 20%;
+    margin: auto;
+    // height: 30vh;
+}
+.center>img {
+    width: 100%;
+    height: 100%;
 }
 </style>
