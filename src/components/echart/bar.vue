@@ -3,10 +3,10 @@
         <div class="echart-title" v-show="show">
             <div class="left-icon"></div>图表信息柱体图
         </div>
-        <dv-border-box-10 style="width: 100%;" v-if="isBorder" :style="{ height:height }">
-            <div class="chart" :style="{ height: height }" id="chart_left2"></div>
+        <dv-border-box-10 style="width: 100%;" v-if="isBorder" :style="{ height: `${height + 3}vh` }">
+            <div class="chart" :style="{ height: `${height}vh` }" id="chart_left2"></div>
         </dv-border-box-10>
-        <div class="chart" :style="{ height: height }" id="chart_left2" v-else></div>
+        <div class="chart" :style="{ height: `${height}vh` }" id="chart_left2" v-else></div>
 
     </div>
 </template>
@@ -27,12 +27,15 @@ export default {
             type: String,
             default: '25%'
         }, height: {
-            type: String,
-            default: '30vh'
+            type: Number,
+            default: 35
         },
         data: {
             type: Object,
-            default: () => null
+            default: () => { }
+        }, unit: {
+            type: Number,
+            default: 1
         }
     },
     data() {
@@ -41,26 +44,76 @@ export default {
         }
     },
     watch: {
-        data(value) {
-            if (value) {
-                this.getEchartLeft2(value);
+        data: {
+            handler(value) {
+                if (value) {
+                    this.$nextTick(() => {
 
-            }
+                        this.getEchartLeft2(value);
+                    })
+                }
+            }, immediate: true,
+            deep: true
+
         }
     },
-    mounted() {
-    },
+
     methods: {
         getEchartLeft2(data) {
-            const garbage = data.weigth.map(item=>item.weigth)
-            const car = data.trans.map(item=>item.number)
+            const garbage = data.weigth?.map(item => item.weigth)
+            const car = data.trans?.map(item => item.number)
+            console.log(document.getElementById('chart_left2'))
             let myChart = echarts.init(document.getElementById('chart_left2'));
+            let series = []
+            const date = new Date()
+            const timeObj = {
+                0: `${date.getHours()}:`,
+                1: `${date.getMonth() + 1}-`,
+                2: `${date.getFullYear()}-`,
+            }
+            let xAxisData = data.weigth.map(item => `${timeObj[this.unit]}${item.index < 10 ? `0${item.index}` : item.index}`)
 
+            if (garbage.length > 0) {
+                series.push({
+                    name: '垃圾重量（吨）',
+                    type: 'bar',
+                    data: garbage, // 数据1的值
+                    itemStyle: {
+                        color: '#4fadb8', // 设置每个柱子的颜色
+                    },
+                    label: {
+                        show: true,
+                        position: 'top',
+                        valueAnimation: true,
+                        color: '#fff',
+                        fontSize: 16,
+                    }
+                })
+            }
+            if (car.length > 0) {
+                series.push({
+                    name: '进站车次（次）',
+                    type: 'bar',
+                    data: car,
+                    label: {
+                        show: true,
+                        position: 'top',
+                        valueAnimation: true,
+                        fontSize: 16,
+
+                        color: '#fff'
+                    },
+                    itemStyle: {
+                        color: '#405289', // 设置每个柱子的颜色
+                    } // 数据2的值
+                })
+                xAxisData = data.trans.map(item => `${timeObj[this.unit]}${item.index < 10 ? `0${item.index}` : item.index}`)
+            }
             let option = {
 
                 xAxis: {
                     type: 'category',
-                    data: data.weigth.map(item=>item.index),
+                    data: xAxisData,
                     axisLabel: {
                         textStyle: {
                             color: '#ffffff'  // 将x坐标轴文字颜色设置为白色
@@ -108,24 +161,7 @@ export default {
 
                 },
 
-                series: [
-                    {
-                        name: '垃圾重量（吨）',
-                        type: 'bar',
-                        data: garbage, // 数据1的值
-                        itemStyle: {
-                            color: '#4fadb8', // 设置每个柱子的颜色
-                        }
-                    },
-                    {
-                        name: '进站车次（次）',
-                        type: 'bar',
-                        data: car,
-                        itemStyle: {
-                            color: '#405289', // 设置每个柱子的颜色
-                        } // 数据2的值
-                    }
-                ]
+                series
             };
 
             myChart.setOption(option, true);
@@ -137,9 +173,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped> .bar {
-     margin-top: 24px;
-     min-width: 300px;
-
+     min-width: 600px;
  }
 
  .chart {
@@ -150,7 +184,7 @@ export default {
 
  ::v-deep {
      .dv-border-box-10 .border-box-content {
-         padding: 22px 0;
+         padding: 6px 0 0;
          margin-top: 12px;
 
      }

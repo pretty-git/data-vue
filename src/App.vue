@@ -38,44 +38,4 @@ export default {
   width: 100%;
 
 }
-
-::v-deep {
-
-  .el-table {
-    background-color: #203363;
-  }
-
-  .el-table th.el-table__cell {
-    background-color: #203363;
-
-    color: #73f7fa;
-
-  }
-
-  .el-table thead {
-    color: #73f7fa;
-
-  }
-
-  .el-table__header {
-    background-color: #203363;
-    color: #73f7fa;
-    font-size: 18px;
-  }
-
-  .el-table__row {
-    background-color: #203363;
-
-
-    color: #73f7fa;
-  }
-
-  .highlight-row {
-    background-color: #FAD7D7 !important;
-  }
-
-  .el-table--enable-row-hover .el-table__body tr:hover>td.el-table__cell {
-    background-color: #1a5ca5;
-  }
-}
 </style>

@@ -16,13 +16,43 @@ export default {
 
         }
     },
-    mounted() {
-        this.getEchartLeft3();
+    props: {
+        data: {
+            type: Array,
+            default: () => []
+        }, unit: {
+            type: Number,
+            default: 1
+        }
+    },
+    watch: {
+        data: {
+            handler(value) {
+                if (value) {
+                    this.$nextTick(() => {
+                        this.getEchartLeft3(value);
+                    })
+                }
+            }, immediate: true,
+            deep: true
+
+        }
     },
     methods: {
-        getEchartLeft3() {
+        getEchartLeft3(value) {
             let myChart = echarts.init(document.getElementById('chart_left3'));
-
+            const date = new Date()
+            const timeObj = {
+                0: `${date.getHours()}:`,
+                1: `${date.getMonth() + 1}-`,
+                2: `${date.getFullYear()}-`,
+            }
+            const data = value.map(item => {
+                return {
+                    value: item.weigth,
+                    name: `${timeObj[this.unit]}${item.index < 10 ? `0${item.index}` : item.index}`
+                }
+            })
             let option = {
 
                 tooltip: {
@@ -38,18 +68,13 @@ export default {
                 markLine: { label: false },
                 series: [
                     {
-                        name: 'Access From',
+                        name: '垃圾重量图表',
                         type: 'pie',
                         radius: '90%',
                         label: {
                             show: false
                         },
-                        data: [
-                            { value: 1048, name: 'Search Engine' },
-                            { value: 735, name: 'Direct' },
-                            { value: 580, name: 'Email' },
-                            { value: 484, name: 'Union Ads' }
-                        ]
+                        data
                     }
                 ]
             };
@@ -61,8 +86,7 @@ export default {
     }
 }
 </script>
-<style lang="scss" scoped> 
-.pie {
+<style lang="scss" scoped> .pie {
      width: 35%;
      margin-top: 16px;
      height: 30vh;

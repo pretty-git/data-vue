@@ -14,31 +14,23 @@
                     </div>
                     <div class="flex">
                         泊位自动
-                        <el-switch class="ml-12" @change="handleChange(item)" :active-value="1" :inactive-value="0"
-                            v-model="controlStatus.selfMotion" active-color="#13ce66" inactive-color="#eee">
+                        <el-switch class="ml-12" @change="handleChange($event, 'selfMotion')" :active-value="1"
+                            :inactive-value="0" v-model="controlStatus.selfMotion" active-color="#13ce66"
+                            inactive-color="#eee">
                         </el-switch>
                     </div>
                 </template>
             </div>
             <template v-if="isLogin">
-                <div class="list" v-if="!isAuto">
-                    <div v-for="item of closeList" :key="item.id" class="flex mb-48">
+                <div class="list">
+                    <div v-for="item of list" :key="item.id" class="flex mb-48">
                         <div class="label">
                             {{ item.name }}
                         </div>
-                        <el-switch @change="handleChange(item)" :active-value="1" :inactive-value="0" :width="50"
+                        <el-switch
+                            :disabled="!!controlStatus.selfMotion && !['platformRise', 'platformDrop'].includes(item.key)"
+                            @change="handleChange($event, item.key)" :active-value="1" :inactive-value="0" :width="50"
                             class="ml-12" v-model="controlStatus[item.key]" active-color="#13ce66" inactive-color="#eee">
-                        </el-switch>
-                    </div>
-                </div>
-                <div class="list" v-else>
-                    <div v-for="item of openList" :key="item.id" class="flex mb-48">
-                        <div class="label">
-                            {{ item.name }}
-                        </div>
-                        <el-switch :active-value="1" :inactive-value="0" :width="50" class="ml-12"
-                            v-model="controlStatus[item.key]" active-color="#13ce66" @change="handleChange(item)"
-                            inactive-color="#eee">
                         </el-switch>
                     </div>
                 </div>
@@ -68,14 +60,15 @@ import { Message } from 'element-ui';
 export default {
     data() {
         return {
-            controlStatus: {},
+            controlStatus: {
+                selfMotion:0
+            },
             form: {
                 account: '',
                 password: '',
             },
-            isAuto: false,
             isLogin: true,
-            closeList: [{
+            list: [{
                 id: 1,
                 name: '平台上升',
                 key: "platformRise",
@@ -108,22 +101,25 @@ export default {
                 name: '进料口下翻',
                 key: "feedportDown",
             },],
-            openList: [{
-                id: 1,
-                name: '上升',
-                key: "caseRise",
-            }, {
-                id: 2,
-                name: '下降',
-                key: "selfMotion",
-            },]
-
         }
     },
-    async created() {
-        this.controlStatus = await this.$api.getBerDetail()
+    props: {
+        data: {
+            type: Object,
+            default: () => { }
+        }
+    }, watch: {
+        data: {
+            handler(value) {
+                this.controlStatus = value ||{}
 
+            },
+            deep: true,
+            immediate: true
+        }
     },
+
+
     methods: {
         handleExit() {
             this.isLogin = false
@@ -136,8 +132,14 @@ export default {
             this.isLogin = true
 
         },
-        handleChange(item) {
-            console.log(item)
+        handleChange(item, key) {
+            this.controlStatus[key] = item
+            if (key === 'selfMotion' && item === 1) {
+                this.list.forEach(item => {
+                    this.$set(this.controlStatus, item.key, 0)
+                })
+            }
+            this.$api.sendControlCmd({berthId:+this.$route.query.berthId,controlCmd:1})
         }
     }
 }
@@ -234,5 +236,4 @@ export default {
     flex-wrap: wrap;
     justify-content: space-between;
     margin-top: 80px;
-}
-</style>
+}</style>

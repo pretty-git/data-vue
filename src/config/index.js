@@ -42,3 +42,10 @@ export function getCar(params) {
     return post('/gcs/v1/getTransStatistics', params)
 
 }
+
+// 控制api
+
+export function sendControlCmd() {
+
+    return post('/gcs/v1/sendControlCmd', params)
+}

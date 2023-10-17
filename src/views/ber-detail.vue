@@ -59,14 +59,14 @@
         </div>
 
         <div class="bottom-main">
-            <Control></Control>
+            <Control :data="berObj"></Control>
             <div class="bottom-right">
                 <div class="echart-title">
                     <div class="left-icon"></div>图表信息
                 </div>
                 <div style="display: flex;align-items: baseline;justify-content: space-around;">
-                    <Lines :data="chartData" :show="false" width="40%" :isBorder="false"></Lines>
-                    <Bar :data="chartData" :show="false" width="40%" :isBorder="false"></Bar>
+                    <Lines :data="chartData" :height="40" :show="false" width="40%" :isBorder="false"></Lines>
+                    <Bar :data="chartData" :height="40" :show="false" width="40%" :isBorder="false"></Bar>
                 </div>
             </div>
         </div>
@@ -104,18 +104,21 @@ export default {
             this.tab = item.id
         },
         async getDetail() {
-            // this.berObj = await this.$api.getBerDetail({
-            //     berthId: this.$route.query.berthId
-            // })
-            const { weigth } = await this.$api.getGarbage({
-                berthId: +this.$route.query.berthId,
-                "subtime": "20231001",
-                "statType": 0
-
-
+            const date = new Date();
+            const subtime = date.getFullYear() + String(date.getMonth() + 1).padStart(2, '0')
+            const { data } = await this.$api.getBerDetail({
+                berthId: +this.$route.query.berthId
             })
-            const { trans } = await this.$api.getCar({
-                berthId: this.$route.query.berthId
+            this.berObj = data
+            const { data: weigth } = await this.$api.getGarbage({
+                berthId: +this.$route.query.berthId,
+                subtime,
+                "statType": 1
+            })
+            const { data: trans } = await this.$api.getCar({
+                berthId: +this.$route.query.berthId,
+                subtime,
+                "statType": 1
             })
             this.chartData = { weigth, trans }
 
@@ -259,12 +262,52 @@ export default {
 
 .bottom-main {
     width: 95%;
-    margin: 40px auto 0;
+    margin: 6vh auto 0;
     display: flex;
     margin-top: 48px;
 }
 
 .bottom-right {
     width: 70%;
+}
+
+::v-deep {
+
+    .el-table {
+        background-color: #203363;
+    }
+
+    .el-table th.el-table__cell {
+        background-color: #203363;
+
+        color: #73f7fa;
+
+    }
+
+    .el-table thead {
+        color: #73f7fa;
+
+    }
+
+    .el-table__header {
+        background-color: #203363;
+        color: #73f7fa;
+        font-size: 18px;
+    }
+
+    .el-table__row {
+        background-color: #203363;
+
+
+        color: #73f7fa;
+    }
+
+    .highlight-row {
+        background-color: #FAD7D7 !important;
+    }
+
+    .el-table--enable-row-hover .el-table__body tr:hover>td.el-table__cell {
+        background-color: #1a5ca5;
+    }
 }
 </style>

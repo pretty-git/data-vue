@@ -7,15 +7,17 @@
             </div>
             <div class="tips">黄色代表温度，橙色代表压力</div>
             <div class="bar-main">
-                <div v-for="item of berList" :key="item.berthId" class="ber-item" @click="getBerDetail(item)">
-                    <div class="wgxc-name">{{ item.berthId }}号泊位</div>
+                <div v-for="item of berList" :key="item.berth_id" class="ber-item" @click="getBerDetail(item)">
+                    <div class="wgxc-name">{{ item.berth_id }}号泊位</div>
                     <div class="flex">
                         <div>
                             <div class="wgxc-bar">
-                                <span class="wgxc-sl-bar" style="height:30%"></span>
-                                <div class="ratio">{{ (item.berthUseCapacity / item.berthTotalCapacity).toFixed(2) }}</div>
+                                <div class="wgxc-sl-bar"
+                                    :style="{ height: `${getHeight(item.used_capacity, item.capacity) > 100 ? 90 : getHeight(item.used_capacity, item.capacity) - 10}%`, backgroundColor: getHeight(item.used_capacity, item.capacity) > 0.8 ? 'red' : '#3261c9' }">
+                                </div>
+                                <div class="ratio">{{ getHeight(item.used_capacity, item.capacity) }}%</div>
                             </div>
-                            <div class="total-name">总重：{{ item.berthTotalCapacity }}吨</div>
+                            <div class="total-name">总重：{{ item.capacity }}吨</div>
                         </div>
                         <div style="margin-left: 20px;">
                             <div class="circle temp">
@@ -24,15 +26,11 @@
                             <div class="circle stress">
                                 {{ item.pressure }}
                             </div>
-                            <div>剩余：{{ item.berthUseCapacity }}吨</div>
+                            <div class="total-name">剩余：{{ getNumber(item.capacity - item.used_capacity) }}吨</div>
                         </div>
                     </div>
-
-
                 </div>
-
             </div>
-
         </dv-border-box-10>
     </div>
 </template>
@@ -47,17 +45,28 @@ export default {
     },
     async created() {
         this.Authorization = this.$store.state.Authorization
-        // this.berList = await this.$api.getBerList()
+        const { data } = await this.$api.getBerList()
+        this.berList = data.concat(data).concat(data)
     },
     mounted() {
 
     },
+    computed: {
+
+    },
     methods: {
-        getBerDetail({ berthId }) {
+        getHeight(use, all) {
+            return this.getNumber((use / all) * 100)
+        },
+        getNumber(num) {
+            let formattedNum = num % 1 !== 0 ? num.toFixed(2) : num.toString();
+            return formattedNum
+        },
+        getBerDetail({ berth_id }) {
             this.$router.push({
                 name: 'BerDetail',
                 query: {
-                    berthId
+                    berthId: berth_id
                 }
             })
         }
@@ -65,8 +74,8 @@ export default {
 }
 </script>
 <style lang="scss" scoped> .berth {
-     width: 30%;
-     min-width: 550px;
+     width: 35%;
+     min-width: 600px;
  }
 
  .echart-title {
@@ -91,16 +100,17 @@ export default {
  }
 
  .wgxc-name {
-     margin-bottom: 6px;
+     margin-bottom: 14px;
+     font-size: 21px;
  }
 
  .total-name {
-     margin-top: 12px;
+     margin-top: 24px;
  }
 
  .wgxc-bar {
      width: 100px;
-     height: 100px;
+     height: 110px;
      position: relative;
      border-top-left-radius: 13px;
      border-top-right-radius: 13px;
@@ -115,8 +125,9 @@ export default {
      top: 46%;
      color: #fff;
      font-size: 23px;
-     left: 28%;
+     left: 50%;
      font-weight: bold;
+     transform: translateX(-50%);
  }
 
  .wgxc-bar .wgxc-sl-bar {
@@ -171,6 +182,10 @@ export default {
      display: flex;
      flex-wrap: wrap;
      justify-content: center;
+     width: 100%;
+     overflow-y: auto;
+     overflow-x: hidden;
+     height: 87%;
  }
 
  .circle {
@@ -206,5 +221,4 @@ export default {
      display: flex;
      align-items: center;
      justify-content: center;
- }
-</style>
+ }</style>

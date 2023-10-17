@@ -18,7 +18,7 @@
                         {{ item.name }}
                     </div>
                     <div>
-                        <el-radio-group v-model="item.type" class="choose-list">
+                        <el-radio-group v-model="item.type" class="choose-list" @change="getOPtions">
                             <el-radio v-for="c of item.arr" :key="c.id" :label="c.id" class="choose-item"> {{ c.name
                             }}</el-radio>
                         </el-radio-group>
@@ -26,8 +26,10 @@
                 </div>
             </div>
             <div class="right">
-                <Lines width="100%" height="80vh" :isBorder="false" v-if="options['type'].type === 'line'"></Lines>
-                <Bar width="100%" height="80vh" :isBorder="false" v-else></Bar>
+                <Lines width="100%" :unit="unit" :height="80" :data="data" :isBorder="false"
+                    v-if="options['type'].type === 'line'">
+                </Lines>
+                <Bar width="100%" :unit="unit" :height="80" :data="data" :isBorder="false" v-else></Bar>
             </div>
         </div>
 
@@ -46,19 +48,21 @@ export default {
     },
     data() {
         return {
+            unit: 0,
+            data: { weigth: [], trans: [] },
             timeObj: {
                 name: "查询类型",
-                type: 'hour',
+                type: 0,
                 arr: [
                     {
-                        id: 'hour',
+                        id: 0,
                         name: '当日垃圾/小时',
                     },
                     {
-                        id: 'day',
+                        id: 1,
                         name: '当月垃圾/天'
                     }, {
-                        id: 'month',
+                        id: 2,
                         name: '当年垃圾/月'
                     }]
             },
@@ -92,11 +96,48 @@ export default {
         }
     },
     created() {
+        this.handleSearch()
     },
     methods: {
         getTime(item) {
             this.timeObj.type = item.id
-        }
+            this.handleSearch()
+        },
+        getOPtions(value) {
+            this.handleSearch()
+        },
+        async handleSearch() {
+            const date = new Date();
+            const dataObj = {
+                0: date.getFullYear() + String(date.getMonth() + 1).padStart(2, '0') + String(date.getDate()).padStart(2, '0'),
+                1: date.getFullYear() + String(date.getMonth() + 1).padStart(2, '0'),
+                2: date.getFullYear()
+            }
+
+            this.unit = this.timeObj.type
+            const subtime = dataObj[this.timeObj.type] + ''
+            const statType = this.timeObj.type
+            this.data = { weigth: [], trans: [] }
+            if (this.options.content.type !== 'car') {
+                const { data: weigth } = await this.$api.getGarbage({
+                    berthId: '',
+                    subtime,
+                    statType
+                })
+                this.data.weigth = weigth || []
+            }
+            if (this.options.content.type !== 'weight') {
+                const { data: trans } = await this.$api.getCar({
+                    berthId: '',
+                    subtime,
+                    statType
+                })
+                this.data.trans = trans || []
+            }
+
+        },
+
+
     }
 }
 </script>
@@ -128,7 +169,7 @@ export default {
 
 
 .choose-item {
-    padding: 3vh 40px;
+    padding: 25px 40px;
     font-size: 18px;
     color: #fff !important;
     cursor: pointer;

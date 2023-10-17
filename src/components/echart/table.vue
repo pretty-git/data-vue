@@ -44,8 +44,7 @@ export default {
     }
 }
 </script>
-<style lang="scss" scoped> 
-.table {
+<style lang="scss" scoped> .table {
      width: 35%;
      min-width: 600px;
  }

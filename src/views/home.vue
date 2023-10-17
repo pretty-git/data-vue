@@ -2,13 +2,13 @@
     <div class="main">
         <Top></Top>
         <div class="content">
-            <Lines></Lines>
+            <Lines :data="chartData" :unit="0"></Lines>
             <div class="center"></div>
-            <Pie></Pie>
+            <Pie :data="chartData.weigth"></Pie>
 
         </div>
-        <div class="content" style="margin-top: 0;">
-            <Bar height="35vh"></Bar>
+        <div class="content">
+            <Bar :height="35" :data="chartData" :unit="0"></Bar>
             <Ber></Ber>
             <Table></Table>
         </div>
@@ -25,6 +25,7 @@ import Table from "../components/echart/table.vue"
 
 
 export default {
+    name: 'Home',
     components: {
         Top,
         Lines,
@@ -35,13 +36,40 @@ export default {
     },
     data() {
         return {
-
+            chartData: {
+                weigth: [], trans: []
+            }
         }
     },
     created() {
+        this.getDetail()
+    },
+    beforeDestroy() {
+        clearInterval(this.refresh)
+        this.refresh = null
     },
     async mounted() {
+        this.refresh = setInterval(() => {
+            this.getDetail
+        }, 10000)
+    },
+    methods: {
+        async getDetail() {
+            const date = new Date();
+            const subtime = date.getFullYear() + String(date.getMonth() + 1).padStart(2, '0')
+            const { data: weigth } = await this.$api.getGarbage({
+                berthId: '',
+                subtime,
+                "statType": 1
+            })
+            const { data: trans } = await this.$api.getCar({
+                berthId: '',
+                subtime,
+                "statType": 1
+            })
+            this.chartData = { weigth: weigth || [], trans: trans || [] }
 
+        },
     }
 
 }
@@ -49,7 +77,7 @@ export default {
 <style scoped lang="scss">
 ::v-deep {
     .content {
-        margin-top: 40px;
+        margin-top: 35px;
         box-sizing: border-box;
         padding: 0 40px;
         width: 100%;
