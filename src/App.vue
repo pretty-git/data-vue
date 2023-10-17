@@ -34,7 +34,7 @@ export default {
   background-size: 100% 100%;
   height: 100vh;
   // overflow-x: auto;
-  overflow-y: auto;
+  // overflow-y: auto;
   width: 100%;
 
 }
