@@ -4,7 +4,7 @@
         <div class="flex">
             <div class="left">
                 <div>
-                    <div class="title" style="color: #74fafd;font-size: 22px;">
+                    <div class="title fs-22" style="color: #74fafd;">
                         {{ excelObj.name }}
                     </div>
                     <div class="choose-list">
@@ -16,19 +16,19 @@
                         <img class="icon" src="../assets//img/excel.png">
                         <div class="export-btn">导出</div>
                     </div>
-                    <div class="title" style="font-size: 22px;">
+                    <div class="title fs-22">
                         查询条件
                     </div>
-                    <el-form class="form" label-width="100px" :mode="form">
+                    <el-form class="form" :mode="form">
                         <el-form-item label="车牌号码">
-                            <el-input style="width: 180px;" v-model="form.number" placeholder="车牌号码"></el-input>
+                            <el-input v-model="form.number" placeholder="车牌号码"></el-input>
                         </el-form-item>
                         <el-form-item label="起始日期">
-                            <el-date-picker style="width: 180px;" v-model="form.startTime" type="date" placeholder="起始日期">
+                            <el-date-picker v-model="form.startTime" type="date" placeholder="起始日期">
                             </el-date-picker>
                         </el-form-item>
                         <el-form-item label="结束日期">
-                            <el-date-picker style="width: 180px;" v-model="form.endTime" type="date" placeholder="结束日期">
+                            <el-date-picker v-model="form.endTime" type="date" placeholder="结束日期">
                             </el-date-picker>
                         </el-form-item>
                     </el-form>
@@ -176,6 +176,18 @@ export default {
 }
 
 ::v-deep {
+    .el-input {
+        width: 180px;
+    }
+
+    .el-input__inner {
+        width: 180px;
+    }
+
+    .el-form-item__label {
+        width: 80px;
+    }
+
     .el-form-item__label {
         color: #fff;
     }
@@ -217,6 +229,10 @@ export default {
     .el-pagination__total {
         color: #fff;
     }
+}
+
+.fs-22 {
+    font-size: 22px;
 }
 
 .right {
