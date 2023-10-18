@@ -45,7 +45,7 @@ export function getCar(params) {
 
 // 控制api
 
-export function sendControlCmd() {
+export function sendControlCmd(params) {
 
     return post('/gcs/v1/sendControlCmd', params)
 }

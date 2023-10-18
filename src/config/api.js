@@ -19,7 +19,7 @@ function getCookieValue(name) {
 }
 
 const instance = axios.create({
-  baseURL: 'http://www.sinupaas.com', // 设置接口的基础路径
+  baseURL: 'http://192.168.161.129', // 设置接口的基础路径
   timeout: 5000, // 请求超时时间
 });
 // instance.defaults.headers.post['Content-Type'] = 'application/json';

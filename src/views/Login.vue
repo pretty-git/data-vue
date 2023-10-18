@@ -24,7 +24,6 @@
 <script>
 
 import md5 from 'md5'
-import axios from 'axios';
 export default {
 	name: 'Login',
 	components: {},

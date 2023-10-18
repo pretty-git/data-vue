@@ -416,7 +416,7 @@ export default {
 
      .el-radio__label {
          color: #fff;
-         font-size: 18px;
+         font-size: 24px;
 
      }
 
@@ -433,6 +433,10 @@ export default {
          display: flex;
          justify-content: center;
          padding-top: 24px;
+     }
+
+     .el-button {
+         font-size: 22px;
      }
  }
 
@@ -456,5 +460,4 @@ export default {
  .decoration {
      width: 30% !important;
      height: 40px !important;
- }
-</style>
+ }</style>
