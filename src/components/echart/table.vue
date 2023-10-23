@@ -24,17 +24,21 @@ export default {
                 oddRowBGC: '',
                 evenRowBGC: '#0d4a92',
                 align: ['center', 'center', 'center', 'center'],
-                data: [
-                    ['1', '川A1223', '2023-10-01 10:10:10', '42',],
-                    ['2', '川A123', '2023-10-01 10:10:10', '42',],
-                    ['3', '川A523', '2023-10-01 10:10:10', '42',],
-                    ['4', '川623', '2023-10-01 10:10:10', '42',],
-                    ['5', '川B1223', '2023-10-01 10:10:10', '42',],
-                    ['6', '川C1223', '2023-10-01 10:10:10', '42',],
-
-                ]
+                data: []
             }
 
+        }
+    },
+    props: {
+        data: Array,
+    },
+    watch: {
+        data: {
+            handler(newVal) {
+                this.config.data = newVal
+            },
+            deep: true,
+            immediate: true
         }
     },
     mounted() {

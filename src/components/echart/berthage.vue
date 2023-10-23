@@ -62,6 +62,7 @@ export default {
             return this.getNumber((use / all) * 100)
         },
         getNumber(num) {
+            if(isNaN(num)) return 0
             let formattedNum = num % 1 !== 0 ? num.toFixed(2) : num.toString();
             return formattedNum
         },
@@ -197,11 +198,11 @@ export default {
 
  .circle {
      border-radius: 50%;
-     width: 35px;
-     height: 35px;
+     width: 38px;
+     height: 38px;
      color: #fff;
      text-align: center;
-     line-height: 35px;
+     line-height: 38px;
      font-size: 16px;
      margin: 0 auto 5px;
  }

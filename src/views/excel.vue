@@ -12,7 +12,7 @@
                             :class="{ 'title': excelObj.type === c.id }" @click="getTime(c)"> {{ c.name
                             }}</div>
                     </div>
-                    <div class="export">
+                    <div class="export" @click="export2Excel">
                         <img class="icon" src="../assets//img/excel.png">
                         <div class="export-btn">导出</div>
                     </div>
@@ -21,10 +21,10 @@
                     </div>
                     <el-form class="form" :mode="form">
                         <el-form-item label="车牌号码">
-                            <el-input v-model="form.number" placeholder="车牌号码"></el-input>
+                            <el-input v-model="form.carNO" placeholder="车牌号码"></el-input>
                         </el-form-item>
                         <el-form-item label="起始日期">
-                            <el-date-picker v-model="form.startTime" type="date" placeholder="起始日期">
+                            <el-date-picker v-model="form.startTime" value-format="yyyyMMdd" type="date" placeholder="起始日期">
                             </el-date-picker>
                         </el-form-item>
                         <el-form-item label="结束日期">
@@ -36,7 +36,7 @@
                 </div>
             </div>
             <div class="right">
-                <el-table :data="tableData" style="width: 100%; " height="75vh">
+                <el-table :data="tableData" style="width: 100%; " height="75vh" ref="table">
                     <template v-for="item of columns[excelObj.type].columns">
                         <el-table-column :prop="item.prop" :key="item.id" :label="item.label" :width="item.width">
                             <template slot-scope="scope">
@@ -47,8 +47,8 @@
                     </template>
                 </el-table>
                 <el-pagination class="pagination" @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                    :current-page.sync="currentPage" :page-size="10" background layout="total, prev, pager, next"
-                    :total="total">
+                    :current-page.sync="pageNum" :page-size="pageSize" background layout="total, prev, pager, next"
+                    :total="totalNum">
                 </el-pagination>
             </div>
         </div>
@@ -58,32 +58,35 @@
 import Top from '../components/header/index.vue'
 import { columns } from '../config/column'
 export default {
+    name: 'Excel',
     components: {
         Top
     },
     data() {
         return {
-            currentPage: 1,
-            total: 100,
+            pageNum: 1,
+            totalNum: 100,
+            pageSize: 10,
+            columns: {},
             tableData: [],
             form: {
-                number: '',
+                carNO: '',
                 startTime: '',
                 endTime: ''
             },
             excelObj: {
                 name: "报表类型",
-                type: 'garbage',
+                type: 0,
                 arr: [
                     {
-                        id: 'garbage',
+                        id: 0,
                         name: '垃圾倒置查询',
                     },
                     {
-                        id: 'car',
+                        id: 1,
                         name: '车辆信息查询'
                     }, {
-                        id: 'change',
+                        id: 2,
                         name: '更换容器查询'
                     }]
             },
@@ -91,18 +94,53 @@ export default {
     },
     created() {
         this.columns = columns
+        this.getData()
     },
 
     methods: {
         getTime(item) {
             this.excelObj.type = item.id
+            this.getData()
         },
-        handleSizeChange() {
+        async getData() {
+            const { carNO, startTime, endTime } = this.form
+            const { data, totalNum } = await this.$api.getRecordList({
+                pageSize: this.pageSize,
+                pageNum: this.pageNum,
+                recordType: this.excelObj.type,
+                carNO,
+                startTime,
+                endTime
+            })
+            this.totalNum = totalNum
+            this.tableData = data?.records || []
+        },
+        handleSizeChange(value) {
+            this.pageSize = value
+            this.getData()
+        },
+        handleCurrentChange(value) {
+            this.pageNum = value
+            this.getData()
 
         },
-        handleCurrentChange() {
+        export2Excel() {
+      require.ensure([], () => {
+        const { export_json_to_excel } = require('../config/Export2Excel');
+        const tHeader = this.columns[this.excelObj.type].columns.map(item=>item.label)
+        tHeader.pop();
+        // 上面设置Excel的表格第一行的标题
+        const filterVal = ['index', 'nickName', 'name'];
+        // 上面的index、nickName、name是tableData里对象的属性
+        const list = this.tableData;  //把data里的tableData存到list
+        const data = this.formatJson(filterVal, list);
+        export_json_to_excel(tHeader, data, '列表excel');
+      })
+    },
 
-        }
+    formatJson(filterVal, jsonData) {
+      return jsonData.map(v => filterVal.map(j => v[j]))
+    }
     }
 }
 </script>

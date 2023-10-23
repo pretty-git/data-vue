@@ -1,6 +1,6 @@
 export  const columns = {
-    'garbage': {
-        id: 'garbage',
+    0: {
+        id: 0,
         columns: [{
             prop: 'id',
             label: '序号',
@@ -28,8 +28,8 @@ export  const columns = {
         }],
         name: '垃圾倒置查询'
     },
-    'change': {
-        id: 'change',
+    1: {
+        id: 1,
         columns: [{
             prop: 'id',
             label: '序号',
@@ -53,8 +53,8 @@ export  const columns = {
         }],
         name: '更换容器查询'
     },
-    "car": {
-        id: 'bug',
+    2: {
+        id: 2,
         columns: [
             {
                 prop: 'id',
@@ -79,8 +79,8 @@ export  const columns = {
 }
 
 export const  berColumns = {
-    'garbage': {
-        id: 'garbage',
+    0: {
+        id: 0,
         columns: [{
             prop: 'id',
             label: '序号',
@@ -99,8 +99,8 @@ export const  berColumns = {
         }],
         name: '垃圾倒置查询'
     },
-    'change': {
-        id: 'change',
+    1: {
+        id: 1,
         columns: [{
             prop: 'id',
             label: '序号',
@@ -124,8 +124,8 @@ export const  berColumns = {
         }],
         name: '更换容器查询'
     },
-    "bug": {
-        id: 'bug',
+   2: {
+        id: 2,
         columns: [
             {
                 prop: 'id',

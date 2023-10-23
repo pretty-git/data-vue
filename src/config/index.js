@@ -30,7 +30,7 @@ export function getBerDetail( params) {
  * @returns 获取垃圾重量统计数据
  */
 export function getGarbage(params) {
-    return post('/gcs/v1/getWeigthStatistics', params)
+    return post('/gcs/v1/getWeightStatistics', params)
 
 }
 /**
@@ -48,4 +48,15 @@ export function getCar(params) {
 export function sendControlCmd(params) {
 
     return post('/gcs/v1/sendControlCmd', params)
+}
+
+// 进出车辆
+
+export function getRecordList(params) {
+    return post('/gcs/v1/getRecordList', params)
+}
+
+// 修改密码
+export function changePassword(params) {
+    return post('/gcs/v1/changePwd', params)
 }

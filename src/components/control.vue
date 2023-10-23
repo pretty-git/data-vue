@@ -13,7 +13,7 @@
                 </div>
                 <div class="flex">
                     泊位自动
-                    <el-switch class="ml-12" @change="handleChange($event, 'selfMotion')" :active-value="1"
+                    <el-switch class="ml-12" @change="handleChange($event, 'selfMotion',0)" :active-value="1"
                         :inactive-value="0" v-model="controlStatus.selfMotion" active-color="#13ce66" inactive-color="#eee">
                     </el-switch>
                 </div>
@@ -27,7 +27,7 @@
                     </div>
                     <el-switch
                         :disabled="!!controlStatus.selfMotion && !['platformRise', 'platformDrop'].includes(item.key)"
-                        @change="handleChange($event, item.key)" :active-value="1" :inactive-value="0" :width="50"
+                        @change="handleChange($event, item.key,item.id)" :active-value="item.id" :inactive-value="0" :width="50"
                         class="ml-12" v-model="controlStatus[item.key]" active-color="#13ce66" inactive-color="#eee">
                     </el-switch>
                 </div>
@@ -65,35 +65,35 @@ export default {
             },
             isLogin: true,
             list: [{
-                id: 1,
+                id: 2,
                 name: '平台上升',
                 key: "platformRise",
             }, {
-                id: 2,
+                id: 3,
                 name: '平台下降',
                 key: "platformDrop",
             }, {
-                id: 3,
+                id: 4,
                 name: '上盖上翻',
                 key: "capUp",
             }, {
-                id: 4,
+                id: 5,
                 name: '上盖下翻',
                 key: "capDown",
             }, {
-                id: 5,
+                id: 6,
                 name: '插销锁住',
                 key: "boltLock",
             }, {
-                id: 6,
+                id: 7,
                 name: '插销松开',
                 key: "boltUnlock",
             }, {
-                id: 7,
+                id: 8,
                 name: '进料口上翻',
                 key: "feedportUp",
             }, {
-                id: 8,
+                id: 9,
                 name: '进料口下翻',
                 key: "feedportDown",
             },],
@@ -106,6 +106,10 @@ export default {
         }, width: {
             type: String,
             default: '35%'
+        },
+        isGlobal:{
+            type:Boolean,
+            default:false
         }
     }, watch: {
         data: {
@@ -131,14 +135,16 @@ export default {
             this.isLogin = true
 
         },
-        handleChange(item, key) {
-            this.controlStatus[key] = item
-            if (key === 'selfMotion' && item === 1) {
-                this.list.forEach(item => {
+        handleChange(item, key,id) {
+            this.list.forEach(item => {
                     this.$set(this.controlStatus, item.key, 0)
                 })
+            this.controlStatus[key] = item
+            this.$emit('status', item, id)
+            if(!this.sGlobal) {
+                this.$api.sendControlCmd({ berthId: +this.$route.query.berthId, controlData: item?1:0,controlCmd:item?item:  id })
+
             }
-            this.$api.sendControlCmd({ berthId: +this.$route.query.berthId, controlCmd: 1 })
         }
     }
 }
@@ -232,6 +238,6 @@ export default {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    margin-top: 20px;
+    padding-top: 20px;
 }
 </style>

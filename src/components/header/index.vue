@@ -39,52 +39,58 @@
 
         </div>
         <!--Top End!-->
-        <el-dialog :showClose="false" :close-on-click-modal="false" :visible.sync="dialogVisible" width="600px"
+        <el-dialog :showClose="false" :close-on-click-modal="false" :visible.sync="dialogVisible" width="500px"
             :before-close="() => dialogVisible = false">
-            <div v-if="status === 'login'">
-                <el-form :model="countForm" label-width="100px" class="demo-countForm">
-                    <el-form-item label="账号：" prop="account">
+            <div class="dialog-content">
+
+                <div v-if="status === 'login'" class="login">
+                    <el-form :model="countForm" label-width="100px" class="demo-countForm">
+                        <!-- <el-form-item label="账号：" prop="account">
                         <el-input v-model="countForm.account" placeholder="请输入账号"></el-input>
-                    </el-form-item>
-                    <el-form-item label="新账号：" prop="newAccount">
-                        <el-input v-model="countForm.newAccount" placeholder="请输入新账号"></el-input>
-                    </el-form-item>
-                    <el-form-item label="原密码：" prop="pass">
+                    </el-form-item> -->
+                        <el-form-item label="新账号：" prop="username">
+                            <el-input v-model="countForm.username" placeholder="请输入新账号"></el-input>
+                        </el-form-item>
+                        <!-- <el-form-item label="原密码：" prop="pass">
                         <el-input v-model="countForm.pass" placeholder="请输入原密码"></el-input>
-                    </el-form-item>
-                    <el-form-item label="新密码：" prop="newPass">
-                        <el-input v-model="countForm.newPass" placeholder="请输入新密码"></el-input>
-                    </el-form-item>
-                </el-form>
-            </div>
-            <div v-else-if="status === 'control'">
-                <Control width="100%"></Control>
-            </div>
-            <div v-else>
-                <div v-for="item of waterList" :key="item.id" class="water-item">
-                    {{ item.name }}
-                    <el-switch v-model="item.status" active-color="#0ef170" style="margin-left: 12px;">
-                    </el-switch>
-                    <div class="circle" :style="{ 'background-color': item.status ? '#0ef170' : '#f5222d' }"></div>
-                    <span style="color: #aaa;">
-                        {{ item.status ? '已打开' : '已关闭' }}
-
-                    </span>
+                    </el-form-item> -->
+                        <el-form-item label="新密码：" prop="password">
+                            <el-input v-model="countForm.password" placeholder="请输入新密码"></el-input>
+                        </el-form-item>
+                    </el-form>
                 </div>
+                <div v-else-if="status === 'control'" class="control">
+                    <Control width="100%" isGlobal @status="setControl"></Control>
+                </div>
+                <div v-else>
+                    <div v-for="item of waterList" :key="item.id" class="water-item">
+                        {{ item.name }}
+                        <el-switch v-model="item.status" active-color="#0ef170" :active-value="item.id" :inactive-value="0"
+                            style="margin-left: 12px;" @change="handleControl($event, item)">
+                        </el-switch>
+                        <div class="circle" :style="{ 'background-color': item.status ? '#0ef170' : '#f5222d' }"></div>
+                        <span style="color: #aaa;">
+                            {{ item.status ? '已打开' : '已关闭' }}
 
+                        </span>
+                    </div>
+
+                </div>
             </div>
+
             <el-radio-group v-model="status" v-if="status !== 'water'">
                 <el-radio label="login">平台登陆</el-radio>
                 <el-radio label="control">泊位控制</el-radio>
             </el-radio-group>
-            <span slot="footer" class="dialog-footer">
+            <div class="dialog-footer">
                 <el-button @click="dialogVisible = false">取 消</el-button>
                 <el-button type="primary" @click="handleSubmit" style="background-color: #1861ad;">保 存</el-button>
-            </span>
+            </div>
         </el-dialog>
     </div>
 </template>
 <script>
+import md5 from 'md5';
 import Control from '../control.vue'
 
 export default {
@@ -97,22 +103,24 @@ export default {
             date: {},
             controlStatus: {},
             countForm: {
-                account: '',
-                newAccount: '',
-                pass: '',
-                newPass: ''
+                username: '',
+                password: ''
             },
             dialogVisible: false,
             status: "login",
             waterList: [{
-                id: 1,
+                id: 10,
                 name: '1号泵',
-                status: false
+                status: 0
             }, {
-                id: 2,
+                id: 11,
                 name: '2号泵',
-                status: false
-            }]
+                status: 0
+            }],
+            control:{
+                controlData:0,
+                controlCmd:0
+            }
         };
     }, created() {
         this.list = [{
@@ -184,13 +192,43 @@ export default {
             this.status = 'login'
             this.dialogVisible = true;
         },
-        handleSubmit() {
+        setControl(value, id) {
+            this.control.controlData = value ? 1 : 0
+            this.control.controlCmd = value ? value : id
+        },
+        async handleSubmit() {
+            if (this.status === 'login') {
+                const { username, password } = this.countForm
+                if (username && password) {
+                    await this.$api.changePassword({
+                        username,
+                        password: md5(password)
+                    })
+                    this.$message.success('修改成功')
+                    this.dialogVisible = false
+                } else {
+                    this.$message.error('请完善账号或密码')
+                }
+
+            }else {
+                const {controlData, controlCmd}  =this.control
+            await this.$api.sendControlCmd({ berthId: '', controlData, controlCmd })
+
+            }
         },
         logout() {
             clearInterval(this.logout)
             this.deleteCookie('SET_TOKEN')
             this.deleteCookie('Authorization')
             this.$router.push('login')
+        },
+        async handleControl(value, item) {
+            this.waterList.forEach(items => {
+                    items.status = 0
+                })
+                item.status = value
+                this.control.controlData = value ? 1 : 0
+            this.control.controlCmd = value ? value : item.id
         }
     },
 }
@@ -421,12 +459,12 @@ export default {
      }
 
      .el-dialog__body {
-         height: 510px;
+         height: 350px;
          box-sizing: border-box;
      }
 
      .el-form-item {
-         margin-bottom: 63px;
+         //  margin-bottom: 63px;
      }
 
      .el-radio-group {
@@ -460,4 +498,22 @@ export default {
  .decoration {
      width: 30% !important;
      height: 40px !important;
+ }
+
+ .demo-countForm {
+     margin-right: 100px;
+ }
+
+ .control {
+     margin: 0 50px;
+ }
+
+ .dialog-footer {
+     display: flex;
+     justify-content: right;
+     margin-top: 60px;
+ }
+
+ .login {
+     padding-bottom: 125px;
  }</style>

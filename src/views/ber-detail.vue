@@ -59,7 +59,7 @@
         </div>
 
         <div class="bottom-main">
-            <Control :data="berObj"></Control>
+            <Control :data="berObj" :is-global="false"></Control>
             <div class="bottom-right">
                 <div class="echart-title">
                     <div class="left-icon"></div>图表信息
@@ -89,7 +89,7 @@ export default {
         return {
             berObj: {},
             current: 0,
-            tab: 'garbage',
+            tab: 0,
             tableData: [],
             chartData: {}
         }

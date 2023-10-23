@@ -4,8 +4,6 @@ import router from './router'
 import store from './store'
 import vueParticles from 'vue-particles'
 import * as api from './config' // 导入api接口
-import '@/assets/styles/base.scss'
-import '@/assets/styles/common.scss'
 import '@/assets/iconfont/iconfont.css'
 import dataV from '@jiaminghi/data-view'
 import '../rem';

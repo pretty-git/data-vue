@@ -19,11 +19,10 @@ function getCookieValue(name) {
 }
 
 const instance = axios.create({
-  baseURL: 'http://192.168.161.129', // 设置接口的基础路径
+  baseURL: 'http://www.sinupaas.com', // 设置接口的基础路径
   timeout: 5000, // 请求超时时间
 });
-// instance.defaults.headers.post['Content-Type'] = 'application/json';
-// instance.defaults.headers = "Content-Type:application/json;charset=UTF-8"//公共携带请求头
+instance.defaults.headers.post['Content-Type'] = 'application/json';
 instance.defaults.withCredentials = true;
 
 // 请求拦截器
@@ -35,9 +34,6 @@ instance.interceptors.request.use(
     const Authorization = md5(`${getCookieValue('SET_TOKEN')}${Math.floor(Date.now() / 1000)}!@#$1234`)
     config.headers.Authorization = Authorization
     config.headers.Token = getCookieValue('SET_TOKEN')
-    // if(!config.Token) {
-    //   window.location.href = '/'
-    // }
 
     return config;
   },
