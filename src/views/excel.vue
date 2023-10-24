@@ -113,7 +113,14 @@ export default {
                 endTime
             })
             this.totalNum = totalNum
-            this.tableData = data?.records || []
+            this.tableData = data?.records || [].map(item => {
+                return {
+                    ...item,
+                    recordTime: item.recordTime.split(' ')[0],
+                    weight2: ((item.weight2 || 0) / 1000).toFixed(2),
+                    weight3: ((item.weight3 || 0) / 1000).toFixed(2)
+                }
+            })
         },
         handleSizeChange(value) {
             this.pageSize = value
@@ -125,22 +132,22 @@ export default {
 
         },
         export2Excel() {
-      require.ensure([], () => {
-        const { export_json_to_excel } = require('../config/Export2Excel');
-        const tHeader = this.columns[this.excelObj.type].columns.map(item=>item.label)
-        tHeader.pop();
-        // 上面设置Excel的表格第一行的标题
-        const filterVal = ['index', 'nickName', 'name'];
-        // 上面的index、nickName、name是tableData里对象的属性
-        const list = this.tableData;  //把data里的tableData存到list
-        const data = this.formatJson(filterVal, list);
-        export_json_to_excel(tHeader, data, '列表excel');
-      })
-    },
+            require.ensure([], () => {
+                const { export_json_to_excel } = require('../config/Export2Excel');
+                const tHeader = this.columns[this.excelObj.type].columns.map(item => item.label)
+                tHeader.pop();
+                // 上面设置Excel的表格第一行的标题
+                const filterVal = ['index', 'nickName', 'name'];
+                // 上面的index、nickName、name是tableData里对象的属性
+                const list = this.tableData;  //把data里的tableData存到list
+                const data = this.formatJson(filterVal, list);
+                export_json_to_excel(tHeader, data, '列表excel');
+            })
+        },
 
-    formatJson(filterVal, jsonData) {
-      return jsonData.map(v => filterVal.map(j => v[j]))
-    }
+        formatJson(filterVal, jsonData) {
+            return jsonData.map(v => filterVal.map(j => v[j]))
+        }
     }
 }
 </script>

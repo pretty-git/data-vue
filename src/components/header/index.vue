@@ -92,7 +92,7 @@
 <script>
 import md5 from 'md5';
 import Control from '../control.vue'
-
+import {removeCookie} from '../../config/env'
 export default {
     name: 'Top',
     components: {
@@ -162,10 +162,7 @@ export default {
             }
 
         },
-        // 清除指定名称的 cookie
-        deleteCookie(name) {
-            document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;";
-        },
+  
 
         backHome() {
             this.$router.push('home');
@@ -218,8 +215,8 @@ export default {
         },
         logout() {
             clearInterval(this.logout)
-            this.deleteCookie('SET_TOKEN')
-            this.deleteCookie('Authorization')
+            removeCookie('SET_TOKEN')
+            removeCookie('Authorization')
             this.$router.push('login')
         },
         async handleControl(value, item) {
@@ -500,12 +497,10 @@ export default {
      height: 40px !important;
  }
 
- .demo-countForm {
-     margin-right: 100px;
- }
+ 
 
  .control {
-     margin: 0 50px;
+     margin: 0 20px;
  }
 
  .dialog-footer {

@@ -63,8 +63,8 @@ export default {
 
     methods: {
         getEchartLeft2(data) {
-            const garbage = data.weigth?.map(item => item.weigth)
-            const car = data.trans?.map(item => item.number)
+            const garbage = (data.weigth || []).map(item => (item.weigth / 1000).toFixed(2))
+            const car = (data.trans || []).map(item => item.number)
             console.log(document.getElementById('chart_left2'))
             let myChart = echarts.init(document.getElementById('chart_left2'));
             let series = []
@@ -75,7 +75,7 @@ export default {
                 2: `${date.getFullYear()}-`,
             }
             const dp = this.unit === 0 ? '时' : ''
-            let xAxisData = data.weigth.map(item => `${timeObj[this.unit]}${item.index < 10 ? `0${item.index}` : item.index}${dp}`)
+            let xAxisData = (data.weigth || []).map(item => `${timeObj[this.unit]}${item.index < 10 ? `0${item.index}` : item.index}${dp}`)
 
             if (garbage.length > 0) {
                 series.push({
@@ -85,13 +85,7 @@ export default {
                     itemStyle: {
                         color: '#4fadb8', // 设置每个柱子的颜色
                     },
-                    label: {
-                        show: true,
-                        position: 'top',
-                        valueAnimation: true,
-                        color: '#fff',
-                        fontSize: 16,
-                    }
+
                 })
             }
             if (car.length > 0) {
@@ -99,14 +93,7 @@ export default {
                     name: '进站车次（次）',
                     type: 'bar',
                     data: car,
-                    label: {
-                        show: true,
-                        position: 'top',
-                        valueAnimation: true,
-                        fontSize: 16,
 
-                        color: '#fff'
-                    },
                     itemStyle: {
                         color: '#405289', // 设置每个柱子的颜色
                     } // 数据2的值
@@ -129,6 +116,9 @@ export default {
                             color: '#00deff'
                         }
                     }
+                },
+                tooltip: {
+                    trigger: 'axis',
                 },
                 yAxis: {
                     type: 'value',

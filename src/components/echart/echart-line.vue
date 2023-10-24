@@ -62,8 +62,8 @@ export default {
     },
     methods: {
         getEchartLeft1(data) {
-            const garbage = data.weigth?.map(item => item.weigth)
-            const car = data.trans?.map(item => item.number)
+            const garbage = (data.weigth || []).map(item => (item.weigth / 1000).toFixed(2))
+            const car = (data.trans || []).map(item => item.number)
             let series = []
             const date = new Date()
             const timeObj = {
@@ -74,7 +74,7 @@ export default {
             const dp = this.unit === 0 ? '时' : ''
 
             let myChart = echarts.init(document.getElementById('chart_left1'));
-            let xAxisData = data.weigth.map(item => `${timeObj[this.unit]}${item.index < 10 ? `0${item.index}` : item.index}${dp}`)
+            let xAxisData = (data.weigth || []).map(item => `${timeObj[this.unit]}${item.index < 10 ? `0${item.index}` : item.index}${dp}`)
             if (garbage.length > 0) {
                 series.push(
                     {
@@ -82,13 +82,7 @@ export default {
                         type: 'line',
                         stack: 'Total',
                         data: garbage,
-                        label: {
-                            show: true,
-                            position: 'top',
-                            valueAnimation: true,
-                            color: '#fff',
-                            fontSize: 16,
-                        },
+
                         areaStyle: {
                             // 区域图渐变色
                             color: new echarts.graphic.LinearGradient(0, 0, 1, 1, [
@@ -107,13 +101,6 @@ export default {
                         type: 'line',
                         stack: 'Total',
                         data: car,
-                        label: {
-                            show: true,
-                            position: 'top',
-                            valueAnimation: true,
-                            color: '#fff',
-                            fontSize: 16,
-                        },
                         areaStyle: {
                             // 区域图渐变色
                             color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
@@ -133,7 +120,6 @@ export default {
                 xAxisData = data.trans.map(item => `${timeObj[this.unit]}${item.index < 10 ? `0${item.index}` : item.index}${dp}`)
 
             }
-            console.log(series)
             let option = {
                 legend: {
                     right: '5%',
@@ -167,6 +153,9 @@ export default {
                             color: '#00deff'
                         }
                     }
+                },
+                tooltip: {
+                    trigger: 'axis',
                 },
                 yAxis: {
                     type: 'value',

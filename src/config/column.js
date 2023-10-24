@@ -4,6 +4,7 @@ export  const columns = {
         columns: [{
             prop: 'id',
             label: '序号',
+            width:80
         }, {
             prop: 'time',
             label: '车牌号',
@@ -25,6 +26,7 @@ export  const columns = {
         },  {
             prop: 'operate',
             label: '操作',
+            width:80
         }],
         name: '垃圾倒置查询'
     },
@@ -96,6 +98,7 @@ export const  berColumns = {
         }, {
             prop: 'operate',
             label: '操作',
+            
         }],
         name: '垃圾倒置查询'
     },
@@ -145,7 +148,7 @@ export const  berColumns = {
 
             },
         ],
-        name: '报警鼓掌信息查询'
+        name: '报警故障信息查询'
     }
 }
 export const  button = {

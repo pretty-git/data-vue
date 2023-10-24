@@ -1,7 +1,7 @@
 
 
 <template>
-	<div class="login-container">
+	<div class="login-container" >
 		<div class="form">
 			<h2>中央控制管理系统</h2>
 			<div class="item">
@@ -13,7 +13,7 @@
 				<input autocomplete="off" type="password" class="input" v-model="userPwd" maxlength="20"
 					@keyup.enter="login" placeholder="请输入密码" />
 			</div>
-			<button class="loginBtn" :disabled="isLoginAble" @click.stop="login">
+			<button class="loginBtn" v-loading="loading" :disabled="isLoginAble" @click.stop="login">
 				立即登录
 			</button>
 
@@ -32,6 +32,7 @@ export default {
 			userName: '',
 			userPwd: '',
 			visible: false,
+			loading:false
 		}
 	},
 	computed: {
@@ -51,6 +52,7 @@ export default {
 					type: 'error',
 				})
 			} else {
+				this.loading = true
 				const timestamp = Math.floor(Date.now() / 1000) + '';
 				const auth = md5(`${this.userName}${timestamp}!@#$1234`).toLowerCase()
 				const param = {
@@ -68,10 +70,13 @@ export default {
 						this.$router.push({
 							path: '/home'
 						})
+						this.loading = false
 
 					})
 					.catch(error => {
 						console.error(error);
+						this.loading = false
+
 					});
 			}
 		},

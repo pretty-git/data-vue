@@ -1,25 +1,13 @@
 import axios from 'axios';
 import {Message} from 'element-ui';
 import md5 from 'md5'
-
+import {getCookieValue} from './env'
 // 创建实例
 // 获取指定名称的 cookie 值
-function getCookieValue(name) {
-  const cookies = document.cookie.split(";");
 
-  for (let i = 0; i < cookies.length; i++) {
-    const cookie = cookies[i].trim().split("=");
-    
-    if (cookie[0] === name) {
-      return cookie[1];
-    }
-  }
-
-  return null; // 如果没有找到指定名称的 cookie，则返回 null
-}
 
 const instance = axios.create({
-  baseURL: 'http://www.sinupaas.com', // 设置接口的基础路径
+  baseURL: 'http://192.168.161.129', // 设置接口的基础路径
   timeout: 5000, // 请求超时时间
 });
 instance.defaults.headers.post['Content-Type'] = 'application/json';

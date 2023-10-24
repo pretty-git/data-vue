@@ -1,7 +1,7 @@
 <template>
     <div class="bottom-left" :style="{ width: width }">
         <div class="echart-title">
-            <div class="flex">
+            <div class="flex" v-show="!isGlobal">
                 <div class="left-icon"></div>
                 <span>
                     泊位控制
@@ -13,7 +13,7 @@
                 </div>
                 <div class="flex">
                     泊位自动
-                    <el-switch class="ml-12" @change="handleChange($event, 'selfMotion',0)" :active-value="1"
+                    <el-switch class="ml-12" @change="handleChange($event, 'selfMotion', 0)" :active-value="1"
                         :inactive-value="0" v-model="controlStatus.selfMotion" active-color="#13ce66" inactive-color="#eee">
                     </el-switch>
                 </div>
@@ -27,20 +27,21 @@
                     </div>
                     <el-switch
                         :disabled="!!controlStatus.selfMotion && !['platformRise', 'platformDrop'].includes(item.key)"
-                        @change="handleChange($event, item.key,item.id)" :active-value="item.id" :inactive-value="0" :width="50"
-                        class="ml-12" v-model="controlStatus[item.key]" active-color="#13ce66" inactive-color="#eee">
+                        @change="handleChange($event, item.key, item.id)" :active-value="item.id" :inactive-value="0"
+                        :width="50" class="ml-12" v-model="controlStatus[item.key]" active-color="#13ce66"
+                        inactive-color="#eee">
                     </el-switch>
                 </div>
             </div>
         </template>
 
         <div class="form" v-if="!isLogin">
-            <el-form label-width="80px" :model="form">
+            <el-form label-width="150px" :model="form">
                 <el-form-item label="账号:" required>
                     <el-input v-model="form.account" placeholder="请输入用户名"></el-input>
                 </el-form-item>
                 <el-form-item label="密码:" required>
-                    <el-input v-model="form.password" placeholder="请输入密码"></el-input>
+                    <el-input type="password" v-model="form.password" placeholder="请输入密码"></el-input>
                 </el-form-item>
             </el-form>
             <button class="login-btn" @click.stop="login">
@@ -51,8 +52,8 @@
 </template>
 <script>
 import { Message } from 'element-ui';
-
-
+import md5 from 'md5';
+import { getCookieValue ,removeCookie} from '../config/env'
 export default {
     data() {
         return {
@@ -63,7 +64,7 @@ export default {
                 account: '',
                 password: '',
             },
-            isLogin: true,
+            isLogin: false,
             list: [{
                 id: 2,
                 name: '平台上升',
@@ -107,9 +108,9 @@ export default {
             type: String,
             default: '35%'
         },
-        isGlobal:{
-            type:Boolean,
-            default:false
+        isGlobal: {
+            type: Boolean,
+            default: false
         }
     }, watch: {
         data: {
@@ -122,27 +123,45 @@ export default {
         }
     },
 
-
+    created() {
+        if (getCookieValue('BAR_SET_TOKEN')) {
+            this.isLogin = true
+        }
+    },
     methods: {
         handleExit() {
             this.isLogin = false
+            removeCookie('BAR_SET_TOKEN')
         },
-        login() {
-            if (this.form.password || !this.form.account) {
+        async login() {
+            if (!this.form.password || !this.form.account) {
                 Message.error("请输入帐号和密码")
                 return
             }
+            const timestamp = Math.floor(Date.now() / 1000) + '';
+            const auth = md5(`${this.form.account}${timestamp}!@#$1234`).toLowerCase()
+            const param = {
+                username: this.form.account,
+                timestamp,
+                auth,
+                type: '1',
+                veriCode: md5(this.form.password)
+            }
+
+            console.log(param)
+            const { data } = await this.$api.handleLogin(param)
+            document.cookie = `BAR_SET_TOKEN=${data.token}; `;
             this.isLogin = true
 
         },
-        handleChange(item, key,id) {
+        handleChange(item, key, id) {
             this.list.forEach(item => {
-                    this.$set(this.controlStatus, item.key, 0)
-                })
+                this.$set(this.controlStatus, item.key, 0)
+            })
             this.controlStatus[key] = item
             this.$emit('status', item, id)
-            if(!this.sGlobal) {
-                this.$api.sendControlCmd({ berthId: +this.$route.query.berthId, controlData: item?1:0,controlCmd:item?item:  id })
+            if (!this.sGlobal) {
+                this.$api.sendControlCmd({ berthId: +this.$route.query.berthId, controlData: item ? 1 : 0, controlCmd: item ? item : id })
 
             }
         }
@@ -224,6 +243,7 @@ export default {
 
 .mb-30 {
     margin-bottom: 34px;
+    width: 50%;
 }
 
 .label {

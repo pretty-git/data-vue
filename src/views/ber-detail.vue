@@ -23,14 +23,14 @@
                     </div>
                     <div class="right">
                         <div v-for="(item, index) in button" :key="index" class="button"
-                            :class="{ 'active': +index === current }" @click="handleStatus(index)">{{
+                            :class="{ 'active': +index === current }">{{
                                 item }}</div>
                     </div>
                 </div>
                 <div class="message">
-                    <div style="width: 55%; margin-bottom: 12px;">总重：{{ berObj.berthTotalCapacity || 0 }}/ 吨</div>
-                    <div style="width: 45%;">剩余： {{ (berObj.berthTotalCapacity || 0 - berObj.berthUseCapacity ||
-                        0).toFixed(2) }} 吨</div>
+                    <div style="width: 55%; margin-bottom: 12px;">总重：{{ handleTurn(berObj.berthTotalCapacity) }}/ 吨</div>
+                    <div style="width: 45%;">剩余： {{handleTurn(berObj.berthTotalCapacity || 0 - berObj.berthUseCapacity ||
+                        0) }} 吨</div>
                     <div>状态：{{ button[current] }}</div>
                 </div>
             </div>
@@ -98,10 +98,33 @@ export default {
         this.button = button
         this.columns = berColumns
         this.getDetail()
+        this.getTable()
+
 
     }, methods: {
         changeTab(item) {
             this.tab = item.id
+            this.getTable()
+        },
+        handleTurn(data) {
+            console.log(data,'data')
+            if(!data) return 0
+            return (data*0.001).toFixed(2)
+        },
+       async getTable() {
+            const { data } = await this.$api.getRecordList({
+                pageNum: 10,
+                berthId:+this.$route.query.berthId,
+                recordType: this.tab,
+            })
+            this.tableData = data?.records || [].map(item => {
+                return {
+                    ...item,
+                    recordTime: item.recordTime.split(' ')[0],
+                    weight2: ((item.weight2 || 0) / 1000).toFixed(2),
+                    weight3: ((item.weight3 || 0) / 1000).toFixed(2)
+                }
+            })
         },
         async getDetail() {
             const date = new Date();
@@ -218,7 +241,6 @@ export default {
     font-size: 15px;
     border-radius: 28px;
     font-weight: bold;
-    cursor: pointer;
     margin: 0 auto 48px;
 }
 

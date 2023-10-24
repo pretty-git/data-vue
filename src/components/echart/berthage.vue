@@ -20,7 +20,7 @@
                                     :style="{ backgroundColor: getHeight(item.used_capacity, item.capacity) > 80 ? 'red' : '#3261c9' }">
                                 </div>
                             </div>
-                            <div class="total-name">总重：{{ item.capacity }}吨</div>
+                            <div class="total-name">总重：{{ (item.capacity/1000).toFixed(2) }}吨</div>
                         </div>
                         <div style="margin-left: 20px;">
                             <div class="circle temp">
@@ -63,6 +63,7 @@ export default {
         },
         getNumber(num) {
             if(isNaN(num)) return 0
+            num = num/1000
             let formattedNum = num % 1 !== 0 ? num.toFixed(2) : num.toString();
             return formattedNum
         },

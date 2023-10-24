@@ -71,11 +71,11 @@ export default {
                 "statType": 0
             })
             this.chartData = { weigth: weigth || [], trans: trans || [] }
-            const { data: { records } } = await this.$api.getRecordList({
+            const { data:records={} } = await this.$api.getRecordList({
                 pageSize: 20,
                 recordType: 1,
             })
-           this.carList =  records.map(item=>{
+           this.carList =  (records?.records ||[]).map(item=>{
                 return [
                     item.index,
                     item.carNO,
