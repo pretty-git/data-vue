@@ -24,10 +24,10 @@
                         </div>
                         <div style="margin-left: 20px;">
                             <div class="circle temp">
-                                {{ item.temperature }}°C
+                                {{ (item.temperature /100).toFixed(2) }}°C
                             </div>
                             <div class="circle stress">
-                                {{ item.pressure }}
+                                {{ (item.pressure /100).toFixed(2) }}
                             </div>
                             <div class="fs-12">剩余：{{ getNumber(item.capacity - item.used_capacity) }}吨</div>
                         </div>
@@ -199,26 +199,22 @@ export default {
 
  .circle {
      border-radius: 50%;
-     width: 38px;
-     height: 38px;
+     width: 40px;
+     height: 40px;
      color: #fff;
      text-align: center;
-     line-height: 38px;
-     font-size: 16px;
+     line-height: 40px;
      margin: 0 auto 5px;
  }
 
  .temp {
      border: 4px solid #e3c615;
      font-size: 12px;
-
  }
 
  .stress {
      border: 4px solid #e68908;
      font-size: 12px;
-
-
  }
 
  .ber-item {

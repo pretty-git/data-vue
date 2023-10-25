@@ -216,7 +216,8 @@ export default {
         logout() {
             clearInterval(this.logout)
             removeCookie('SET_TOKEN')
-            removeCookie('Authorization')
+            removeCookie('BAR_SET_TOKEN')
+
             this.$router.push('login')
         },
         async handleControl(value, item) {
