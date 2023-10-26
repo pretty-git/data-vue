@@ -19,7 +19,7 @@ export default {
         return {
             config: {
                 header: ['序号', '车牌号', '进站时间', '货物重量（吨）'],
-                columnWidth: [100, 150, 150],
+                columnWidth: [50, 100, 170],
                 headerBGC: 'transparent',
                 oddRowBGC: '',
                 evenRowBGC: '#0d4a92',
@@ -35,7 +35,7 @@ export default {
     watch: {
         data: {
             handler(newVal) {
-                this.config.data = newVal
+                this.config = { ...this.config, data: newVal }
             },
             deep: true,
             immediate: true

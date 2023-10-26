@@ -71,16 +71,16 @@ export default {
                 "statType": 0
             })
             this.chartData = { weigth: weigth || [], trans: trans || [] }
-            const { data:records={} } = await this.$api.getRecordList({
+            const { data } = await this.$api.getRecordList({
                 pageSize: 20,
                 recordType: 1,
             })
-           this.carList =  (records?.records ||[]).map(item=>{
+            this.carList = (data || []).map(item => {
                 return [
-                    item.index,
+                    item.id,
                     item.carNO,
-                    item.dumpTime,
-                    item.cargoWeight]
+                    item.enteTime,
+                    (item.cargoWeight / 1000).toFixed(2)]
             })
         },
     }

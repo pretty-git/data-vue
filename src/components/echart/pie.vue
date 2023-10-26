@@ -50,7 +50,7 @@ export default {
             const dp = this.unit === 0 ? '时' : ''
             const data = value.map(item => {
                 return {
-                    value: (item.weigth/1000).toFixed(2),
+                    value: (item.weigth / 1000).toFixed(2),
                     name: `${timeObj[this.unit]}${item.index < 10 ? `0${item.index}` : item.index}${dp}`
                 }
             })

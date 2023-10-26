@@ -20,14 +20,14 @@
                                     :style="{ backgroundColor: getHeight(item.used_capacity, item.capacity) > 80 ? 'red' : '#3261c9' }">
                                 </div>
                             </div>
-                            <div class="total-name">总重：{{ (item.capacity/1000).toFixed(2) }}吨</div>
+                            <div class="total-name">总重：{{ (item.capacity / 1000).toFixed(2) }}吨</div>
                         </div>
                         <div style="margin-left: 20px;">
                             <div class="circle temp">
-                                {{ (item.temperature /100).toFixed(2) }}°C
+                                {{ (item.temperature / 100).toFixed(2) }}°C
                             </div>
                             <div class="circle stress">
-                                {{ (item.pressure /100).toFixed(2) }}
+                                {{ (item.pressure / 100).toFixed(2) }}
                             </div>
                             <div class="fs-12">剩余：{{ getNumber(item.capacity - item.used_capacity) }}吨</div>
                         </div>
@@ -62,8 +62,8 @@ export default {
             return this.getNumber((use / all) * 100)
         },
         getNumber(num) {
-            if(isNaN(num)) return 0
-            num = num/1000
+            if (isNaN(num)) return 0
+            num = num / 1000
             let formattedNum = num % 1 !== 0 ? num.toFixed(2) : num.toString();
             return formattedNum
         },
@@ -104,9 +104,9 @@ export default {
  }
 
  .wgxc-name {
-     font-size: 20px;
+     font-size: 17px;
      font-weight: bold;
-     margin-bottom: 6px;
+     margin-bottom: 3px;
  }
 
  .total-name {
@@ -119,8 +119,8 @@ export default {
  }
 
  .wgxc-bar {
-     width: 80px;
-     height: 80px;
+     width: 85px;
+     height: 93px;
      position: relative;
      border-top-left-radius: 13px;
      border-top-right-radius: 13px;
@@ -155,18 +155,18 @@ export default {
 
  .wgxc-bar .wgxc-sl-bar:before {
      content: '';
-     width: 80px;
+     width: 85px;
      background-color: #0093ff;
      border-radius: 50%;
      height: 15px;
      position: absolute;
-     top: -3px;
+     top: -8px;
      left: 0px;
  }
 
  .wgxc-bar:before {
      content: '';
-     width: 80px;
+     width: 85px;
      background-color: #1562aa;
      border-radius: 50%;
      height: 19px;
@@ -177,7 +177,7 @@ export default {
  }
 
  .bar-bottom {
-     width: 80px;
+     width: 85px;
      background-color: #1984d8;
      border-radius: 50%;
      height: 15px;
@@ -199,11 +199,11 @@ export default {
 
  .circle {
      border-radius: 50%;
-     width: 40px;
-     height: 40px;
+     width: 43px;
+     height: 43px;
      color: #fff;
      text-align: center;
-     line-height: 40px;
+     line-height: 43px;
      margin: 0 auto 5px;
  }
 
@@ -222,7 +222,7 @@ export default {
      font-size: 16px;
      width: 45%;
      text-align: center;
-     margin-bottom: 6px;
+     margin-bottom: 3px;
  }
 
  .flex {

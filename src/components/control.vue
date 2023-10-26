@@ -13,7 +13,7 @@
                 </div>
                 <div class="flex">
                     泊位自动
-                    <el-switch class="ml-12" @change="handleChange($event, 'selfMotion', 0)" :active-value="1"
+                    <el-switch class="ml-12" @change="handleChange($event, 'selfMotion', 1)" :active-value="1"
                         :inactive-value="0" v-model="controlStatus.selfMotion" active-color="#13ce66" inactive-color="#eee">
                     </el-switch>
                 </div>
@@ -36,7 +36,7 @@
         </template>
 
         <div class="form" v-if="!isLogin">
-            <el-form label-width="150px" :model="form">
+            <el-form label-width="100px" :model="form">
                 <el-form-item label="账号:" required>
                     <el-input v-model="form.account" placeholder="请输入用户名"></el-input>
                 </el-form-item>
@@ -53,7 +53,7 @@
 <script>
 import { Message } from 'element-ui';
 import md5 from 'md5';
-import { getCookieValue ,removeCookie} from '../config/env'
+import { getCookieValue, removeCookie } from '../config/env'
 export default {
     data() {
         return {
@@ -112,7 +112,8 @@ export default {
             type: Boolean,
             default: false
         }
-    }, watch: {
+    },
+    watch: {
         data: {
             handler(value) {
                 this.controlStatus = value || {}
@@ -124,33 +125,29 @@ export default {
     },
 
     created() {
-        if (getCookieValue('BAR_SET_TOKEN')) {
+        if (getCookieValue('IS_LOGIN')) {
             this.isLogin = true
         }
+        console.log('控制')
     },
     methods: {
         handleExit() {
             this.isLogin = false
-            removeCookie('BAR_SET_TOKEN')
+            removeCookie('IS_LOGIN')
         },
         async login() {
             if (!this.form.password || !this.form.account) {
                 Message.error("请输入帐号和密码")
                 return
             }
-            const timestamp = Math.floor(Date.now() / 1000) + '';
-            const auth = md5(`${this.form.account}${timestamp}!@#$1234`).toLowerCase()
             const param = {
                 username: this.form.account,
-                timestamp,
-                auth,
-                type: '1',
-                veriCode: md5(this.form.password)
+                password: md5(this.form.password)
             }
 
             console.log(param)
-            const { data } = await this.$api.handleLogin(param)
-            document.cookie = `BAR_SET_TOKEN=${data.token}; `;
+            await this.$api.loginControl(param)
+            document.cookie = `IS_LOGIN=true; `;
             this.isLogin = true
 
         },
@@ -161,7 +158,7 @@ export default {
             this.controlStatus[key] = item
             this.$emit('status', item, id)
             if (!this.sGlobal) {
-                this.$api.sendControlCmd({ berthId: +this.$route.query.berthId, controlData: item ? 1 : 0, controlCmd: item ? item : id })
+                this.$api.sendControlCmd({ berthId: +this.$route.query.berthId, controlData: item ? 1 : 0, controlCmd: id })
 
             }
         }
@@ -186,6 +183,10 @@ export default {
 
 
 ::v-deep {
+    .el-switch__core {
+        width: 50px !important;
+    }
+
     .el-form-item__label {
         color: #fff;
     }
@@ -205,10 +206,10 @@ export default {
 }
 
 .form {
-    width: 50%;
+    width: 70%;
     height: auto;
     padding: 35px 30px 25px;
-    margin: 5vh auto 0;
+    margin: 12px auto 0;
 }
 
 .login-btn {

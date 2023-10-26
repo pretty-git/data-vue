@@ -9,7 +9,7 @@
                     </div>
                     <div class="choose-list">
                         <div v-for="c of excelObj.arr" :key="c.id" :label="c.id" class="choose-item"
-                            :class="{ 'title': excelObj.type === c.id }" @click="getTime(c)"> {{ c.name
+                            :class="{ 'title': excelObj.type === c.id }" @click="getTab(c)"> {{ c.name
                             }}</div>
                     </div>
                     <div class="export" @click="export2Excel">
@@ -36,12 +36,12 @@
                 </div>
             </div>
             <div class="right">
-                <el-table :data="tableData" style="width: 100%; " height="75vh" ref="table">
-                    <template v-for="item of columns[excelObj.type].columns">
+                <el-table :data="tableData" style="width: 98%; " height="75vh" ref="table" v-loading="loading">
+                    <template v-for="item of columnsData">
                         <el-table-column :prop="item.prop" :key="item.id" :label="item.label" :width="item.width">
                             <template slot-scope="scope">
-                                <span v-if="item.prop !== 'operate'">{{ scope[item.prop] }}</span>
-                                <i class="iconfont icon-delete" v-else></i>
+                                <span v-if="item.prop !== 'operate'">{{ scope.row[item.prop] }}</span>
+                                <i class="iconfont icon-delete" @click="handleDelete(item)" v-else></i>
                             </template>
                         </el-table-column>
                     </template>
@@ -56,7 +56,8 @@
 </template>
 <script>
 import Top from '../components/header/index.vue'
-import { columns } from '../config/column'
+import { columns, button } from '../config/column'
+
 export default {
     name: 'Excel',
     components: {
@@ -67,7 +68,8 @@ export default {
             pageNum: 1,
             totalNum: 100,
             pageSize: 10,
-            columns: {},
+            loading: false,
+            columnsData: {},
             tableData: [],
             form: {
                 carNO: '',
@@ -93,34 +95,47 @@ export default {
         }
     },
     created() {
-        this.columns = columns
+        this.columnsData = columns[this.excelObj.type]
         this.getData()
     },
 
     methods: {
-        getTime(item) {
+        getTab(item) {
             this.excelObj.type = item.id
+            this.columnsData = columns[this.excelObj.type]
             this.getData()
         },
         async getData() {
-            const { carNO, startTime, endTime } = this.form
-            const { data, totalNum } = await this.$api.getRecordList({
-                pageSize: this.pageSize,
-                pageNum: this.pageNum,
-                recordType: this.excelObj.type,
-                carNO,
-                startTime,
-                endTime
-            })
-            this.totalNum = totalNum
-            this.tableData = data?.records || [].map(item => {
-                return {
-                    ...item,
-                    recordTime: item.recordTime.split(' ')[0],
-                    weight2: ((item.weight2 || 0) / 1000).toFixed(2),
-                    weight3: ((item.weight3 || 0) / 1000).toFixed(2)
-                }
-            })
+            try {
+                this.loading = true
+                const { carNO, startTime, endTime } = this.form
+                const { data, totalNum } = await this.$api.getRecordList({
+                    pageSize: this.pageSize,
+                    pageNum: this.pageNum,
+                    recordType: this.excelObj.type,
+                    carNO,
+                    startTime,
+                    endTime
+                })
+                this.totalNum = totalNum
+                this.tableData = (data || []).map(item => {
+                    return {
+                        ...item,
+                        location: `${item.berthId}泊位`,
+                        status: button[item.status],
+                        garbageWeight: ((item.garbageWeight || 0) / 1000).toFixed(2),
+                        cargoWeight: ((item.cargoWeight || 0) / 1000).toFixed(2),
+                        vehicleWeight: ((item.vehicleWeight || 0) / 1000).toFixed(2)
+                    }
+                })
+            } catch (error) {
+                this.loading = false
+
+            } finally {
+                this.loading = false
+
+            }
+
         },
         handleSizeChange(value) {
             this.pageSize = value
@@ -134,10 +149,10 @@ export default {
         export2Excel() {
             require.ensure([], () => {
                 const { export_json_to_excel } = require('../config/Export2Excel');
-                const tHeader = this.columns[this.excelObj.type].columns.map(item => item.label)
+                const tHeader = this.columnsData.map(item => item.label)
                 tHeader.pop();
                 // 上面设置Excel的表格第一行的标题
-                const filterVal = ['index', 'nickName', 'name'];
+                const filterVal = this.columnsData.map(item => item.prop)
                 // 上面的index、nickName、name是tableData里对象的属性
                 const list = this.tableData;  //把data里的tableData存到list
                 const data = this.formatJson(filterVal, list);
@@ -146,7 +161,21 @@ export default {
         },
 
         formatJson(filterVal, jsonData) {
+            console.log(filterVal, jsonData, jsonData.map(v => filterVal.map(j => v[j])))
             return jsonData.map(v => filterVal.map(j => v[j]))
+        },
+        async handleDelete(item) {
+            await this.$confirm('确认删除该条记录吗？', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            })
+            await this.$api.deleteRecord({ recordType: this.excelObj.type, recordId: item.id })
+            this.$message({
+                type: 'success',
+                message: '删除成功!'
+            });
+            await this.getData()
         }
     }
 }

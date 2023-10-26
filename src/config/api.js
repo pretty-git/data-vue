@@ -37,14 +37,11 @@ instance.interceptors.request.use(
 // 响应拦截器
 instance.interceptors.response.use(
   response => {
-    console.log(response,'详情')
-
     if(response.data.code == 200) {
          return response.data
-
     }
     Message.error(response.data.message)
-
+   return Promise.reject();
     // 对响应数据做些什么
   },
   error => {

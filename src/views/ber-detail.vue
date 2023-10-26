@@ -29,7 +29,7 @@
                 </div>
                 <div class="message">
                     <div style="width: 55%; margin-bottom: 12px;">总重：{{ handleTurn(berObj.berthTotalCapacity) }}/ 吨</div>
-                    <div style="width: 45%;">剩余： {{handleTurn(berObj.berthTotalCapacity || 0 - berObj.berthUseCapacity ||
+                    <div style="width: 45%;">剩余： {{ handleTurn(berObj.berthTotalCapacity || 0 - berObj.berthUseCapacity ||
                         0) }} 吨</div>
                     <div>状态：{{ button[current] }}</div>
                 </div>
@@ -44,12 +44,12 @@
                 </div>
 
                 <div class="right-table">
-                    <el-table :data="tableData" style="width: 100%; " height="35vh">
+                    <el-table :data="tableData" style="width: 98%; " height="35vh">
                         <template v-for="item of columns[tab].columns">
                             <el-table-column :prop="item.prop" :key="item.id" :label="item.label" :width="item.width">
                                 <template slot-scope="scope">
-                                    <span v-if="item.prop !== 'operate'">{{ scope[item.prop] }}</span>
-                                    <i class="iconfont icon-delete" v-else></i>
+                                    <span v-if="item.prop !== 'operate'">{{ scope.row[item.prop] }}</span>
+                                    <i class="iconfont icon-delete" @click="handleDelete(scope.row)" v-else></i>
                                 </template>
                             </el-table-column>
                         </template>
@@ -79,6 +79,7 @@ import Bar from "../components/echart/bar.vue"
 import Control from '../components/control.vue'
 import { berColumns, button } from '../config/column'
 export default {
+    name: 'Detail',
     components: {
         Top,
         Lines,
@@ -107,22 +108,24 @@ export default {
             this.getTable()
         },
         handleTurn(data) {
-            console.log(data,'data')
-            if(!data) return 0
-            return (data*0.001).toFixed(2)
+            console.log(data, 'data')
+            if (!data) return 0
+            return (data * 0.001).toFixed(2)
         },
-       async getTable() {
+        async getTable() {
             const { data } = await this.$api.getRecordList({
-                pageNum: 10,
-                berthId:+this.$route.query.berthId,
+                pageNum: 1,
+                berthId: +this.$route.query.berthId,
                 recordType: this.tab,
             })
-            this.tableData = data?.records || [].map(item => {
+            this.tableData = (data || []).map(item => {
                 return {
                     ...item,
-                    recordTime: item.recordTime.split(' ')[0],
-                    weight2: ((item.weight2 || 0) / 1000).toFixed(2),
-                    weight3: ((item.weight3 || 0) / 1000).toFixed(2)
+                    location: `${item.berthId}泊位`,
+                    status: button[item.status],
+                    garbageWeight: ((item.garbageWeight || 0) / 1000).toFixed(2),
+                    cargoWeight: ((item.cargoWeight || 0) / 1000).toFixed(2),
+                    vehicleWeight: ((item.vehicleWeight || 0) / 1000).toFixed(2)
                 }
             })
         },
@@ -148,6 +151,19 @@ export default {
         },
         handleStatus(index) {
             this.current = +index
+        },
+        async handleDelete(item) {
+            await this.$confirm('确认删除该条记录吗？', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            })
+            await this.$api.deleteRecord({ recordType: this.tab, recordId: item.id })
+            this.$message({
+                type: 'success',
+                message: '删除成功!'
+            });
+            await this.getTable()
         }
     }
 }

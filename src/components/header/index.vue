@@ -13,7 +13,7 @@
             <div class="flex admin-content" @click="changePassword">
                 <i class="iconfont icon-renyuan admin"></i>
                 <div class="flex admin-name" style="flex-direction: column;">
-                    <span>Admin</span>
+                    <span>{{ countName }}</span>
                     <span>欢迎您使用</span>
                 </div>
             </div>
@@ -39,12 +39,12 @@
 
         </div>
         <!--Top End!-->
-        <el-dialog :showClose="false" :close-on-click-modal="false" :visible.sync="dialogVisible" width="500px"
+        <el-dialog :showClose="false" :close-on-click-modal="false" :visible.sync="dialogVisible"
             :before-close="() => dialogVisible = false">
             <div class="dialog-content">
 
                 <div v-if="status === 'login'" class="login">
-                    <el-form :model="countForm" label-width="100px" class="demo-countForm">
+                    <el-form :model="countForm" label-width="150px" class="demo-countForm">
                         <!-- <el-form-item label="账号：" prop="account">
                         <el-input v-model="countForm.account" placeholder="请输入账号"></el-input>
                     </el-form-item> -->
@@ -60,7 +60,7 @@
                     </el-form>
                 </div>
                 <div v-else-if="status === 'control'" class="control">
-                    <Control width="100%" isGlobal @status="setControl"></Control>
+                    <Control width="100%" :data="controlData" isGlobal @status="setControl"></Control>
                 </div>
                 <div v-else>
                     <div v-for="item of waterList" :key="item.id" class="water-item">
@@ -83,16 +83,29 @@
                 <el-radio label="control">泊位控制</el-radio>
             </el-radio-group>
             <div class="dialog-footer">
-                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button @click="handleClose">取 消</el-button>
                 <el-button type="primary" @click="handleSubmit" style="background-color: #1861ad;">保 存</el-button>
             </div>
         </el-dialog>
+        <!-- <el-dialog title="警告提示" :visible.sync="messageDialog" width="500px" :before-close="() => messageDialog = false">
+            <div v-for="item of warningData" :key="item.alarmId">
+                <span class="message-title">{{ item.title }}</span>
+                <div class="message-content">
+                    {{ item.content }}
+                </div>
+            </div>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="messageDialog = false">取 消</el-button>
+                <el-button type="primary" @click="handleClose">确 定</el-button>
+            </span>
+        </el-dialog> -->
     </div>
 </template>
 <script>
 import md5 from 'md5';
 import Control from '../control.vue'
-import {removeCookie} from '../../config/env'
+import { removeCookie, getCookieValue } from '../../config/env'
+
 export default {
     name: 'Top',
     components: {
@@ -107,7 +120,10 @@ export default {
                 password: ''
             },
             dialogVisible: false,
+            messageDialog: false,
             status: "login",
+            warningData: [],
+            controlData: {},
             waterList: [{
                 id: 10,
                 name: '1号泵',
@@ -117,12 +133,14 @@ export default {
                 name: '2号泵',
                 status: 0
             }],
-            control:{
-                controlData:0,
-                controlCmd:0
+            control: {
+                controlData: 0,
+                controlCmd: 0
             }
         };
-    }, created() {
+    },
+
+    created() {
         this.list = [{
             id: 1,
             name: '泊位控制',
@@ -138,10 +156,26 @@ export default {
         }];
         this.date = this.getTime()
 
-        this.timeHandler = setInterval(() => {
+        this.timeHandler = setInterval(async () => {
             this.date = this.getTime()
-
         }, 1000)
+        this.countName = getCookieValue('COUNT_NAME')
+        this.messageHandler = setInterval(async () => {
+            const { data } = await this.$api.getAlarmList()
+            if ((data || []).length > 0) {
+                clearInterval(this.messageHandler)
+                for (let item of data) {
+                    await this.$confirm(`${item.content}`, `${item.title}`, {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    })
+                    console.log(item)
+                    await this.$api.clearAlarm({ alarmId: item.alarm_id })
+                }
+            }
+        }, 1000)
+
     }, methods: {
         getTime() {
             const date = new Date();
@@ -162,16 +196,19 @@ export default {
             }
 
         },
-  
+
 
         backHome() {
             this.$router.push('home');
         },
-        handleRouter(item) {
+        async handleRouter(item) {
             if (item === 1) {
                 this.status = 'control'
                 this.dialogVisible = true;
-
+                //     const { data } = await this.$api.getBerDetail({
+                //         berthId: ''
+                //     })
+                // this.controlData = data
 
             }
             else if (item == 2) {
@@ -191,7 +228,7 @@ export default {
         },
         setControl(value, id) {
             this.control.controlData = value ? 1 : 0
-            this.control.controlCmd = value ? value : id
+            this.control.controlCmd = id
         },
         async handleSubmit() {
             if (this.status === 'login') {
@@ -203,31 +240,39 @@ export default {
                     })
                     this.$message.success('修改成功')
                     this.dialogVisible = false
+                    this.logout()
                 } else {
                     this.$message.error('请完善账号或密码')
                 }
 
-            }else {
-                const {controlData, controlCmd}  =this.control
-            await this.$api.sendControlCmd({ berthId: '', controlData, controlCmd })
+            } else {
+                const { controlData, controlCmd } = this.control
+                await this.$api.sendControlCmd({ berthId: '', controlData, controlCmd })
 
             }
         },
+        handleClose() {
+            this.countForm.username = ''
+            this.countForm.password = ''
+            this.dialogVisible = false
+        },
         logout() {
-            clearInterval(this.logout)
+            clearInterval(this.timeHandler)
+            clearInterval(this.messageHandler)
             removeCookie('SET_TOKEN')
             removeCookie('BAR_SET_TOKEN')
+            removeCookie('COUNT_NAME')
 
-            this.$router.push('login')
+            this.$router.replace('login')
         },
         async handleControl(value, item) {
             this.waterList.forEach(items => {
-                    items.status = 0
-                })
-                item.status = value
-                this.control.controlData = value ? 1 : 0
+                items.status = 0
+            })
+            item.status = value
+            this.control.controlData = value ? 1 : 0
             this.control.controlCmd = value ? value : item.id
-        }
+        },
     },
 }
 </script>
@@ -440,6 +485,7 @@ export default {
 
  ::v-deep {
      .el-dialog {
+         width: 500px;
          background-color: #152141;
          padding-right: 12px;
          height: 620px;
@@ -474,6 +520,11 @@ export default {
      .el-button {
          font-size: 22px;
      }
+
+     .el-dialog__title {
+         color: #fff;
+         font-size: 30px;
+     }
  }
 
  .circle {
@@ -498,7 +549,7 @@ export default {
      height: 40px !important;
  }
 
- 
+
 
  .control {
      margin: 0 20px;
@@ -512,4 +563,16 @@ export default {
 
  .login {
      padding-bottom: 125px;
- }</style>
+ }
+
+ .message-title {
+     font-size: 22px;
+     color: #fff;
+ }
+
+ .message-content {
+     font-size: 20px;
+     color: #fff;
+     margin-top: 12px;
+ }
+</style>

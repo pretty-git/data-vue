@@ -1,7 +1,7 @@
 
 
 <template>
-	<div class="login-container" >
+	<div class="login-container">
 		<div class="form">
 			<h2>中央控制管理系统</h2>
 			<div class="item">
@@ -32,7 +32,7 @@ export default {
 			userName: '',
 			userPwd: '',
 			visible: false,
-			loading:false
+			loading: false
 		}
 	},
 	computed: {
@@ -67,7 +67,9 @@ export default {
 				this.$api.handleLogin(param)
 					.then(response => {
 						document.cookie = `SET_TOKEN=${response.data.token}; `;
-						this.$router.push({
+						document.cookie = `COUNT_NAME=${this.userName}; `;
+
+						this.$router.replace({
 							path: '/home'
 						})
 						this.loading = false

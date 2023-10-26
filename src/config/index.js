@@ -60,3 +60,18 @@ export function getRecordList(params) {
 export function changePassword(params) {
     return post('/gcs/v1/changePwd', params)
 }
+// 登录控制中心
+export function loginControl(params) {
+    return post('/gcs/v1/loginControl', params)
+}
+//获取告警状态
+export function getAlarmList(params) {
+    return get('/gcs/v1/getAlarmList',params)
+}
+//取消告警
+export function clearAlarm(params) {  
+    return post('/gcs/v1/clearAlarm',params)
+  }
+  export function deleteRecord(params) {
+    return post('/gcs/v1/deleteRecord',params)
+  }
