@@ -1,4 +1,3 @@
-export const HostName = ''
 export function getCookieValue(name) {
     const cookies = document.cookie.split(";");
   
