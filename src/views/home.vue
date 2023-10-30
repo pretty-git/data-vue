@@ -4,7 +4,7 @@
         <div class="content mt-20 ">
             <Lines :data="chartData" :unit="0"></Lines>
             <div class="center">
-                <img src="../assets//img/center.png">
+                <img src="../assets//img/car.png">
             </div>
             <Pie :data="chartData.weigth"></Pie>
 
@@ -102,6 +102,7 @@ export default {
         display: flex;
         flex-wrap: nowrap;
         justify-content: space-between;
+        height: 44vh;
     }
 
     .echart-title {
@@ -115,12 +116,14 @@ export default {
 }
 
 .center {
-    width: 20%;
+    width: 34%;
     margin: auto;
+    height: 100%;
+    text-align: center;
 }
 
 .center>img {
-    width: 100%;
+    // width: 100%;
     height: 100%;
 }
 </style>

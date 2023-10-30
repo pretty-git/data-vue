@@ -19,7 +19,7 @@ export default {
         return {
             config: {
                 header: ['序号', '车牌号', '进站时间', '货物重量（吨）'],
-                columnWidth: [50, 100, 170],
+                columnWidth: [75, 130, 230],
                 headerBGC: 'transparent',
                 oddRowBGC: '',
                 evenRowBGC: '#0d4a92',
@@ -49,7 +49,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped> .table {
-     width: 35%;
+     width: 30%;
  }
 
  .echart-title {

@@ -166,7 +166,9 @@ export default {
     }
 }
 </script>
-<style lang="scss" scoped> .bar {}
+<style lang="scss" scoped> .bar {
+     width: 30%;
+ }
 
  .chart {
      width: 100%;

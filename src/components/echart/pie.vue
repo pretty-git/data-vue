@@ -77,7 +77,7 @@ export default {
                         name: '垃圾重量图表',
                         type: 'pie',
                         radius: '90%',
-                        center: ['30%', '50%'],
+                        center: ['35%', '50%'],
                         label: {
                             show: false
                         },
@@ -94,7 +94,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped> .pie {
-     width: 35%;
+     width: 30%;
      margin-top: 16px;
      height: 30vh;
  }

@@ -59,7 +59,8 @@ export default {
     },
     methods: {
         getHeight(use, all) {
-            return this.getNumber((use / all) * 100)
+            // return this.getNumber((use / all) * 100)
+            return 30
         },
         getNumber(num) {
             if (isNaN(num)) return 0
@@ -79,7 +80,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped> .berth {
-     width: 28%;
+     width: 34%;
  }
 
  .echart-title {

@@ -1,4 +1,7 @@
-import { get, post } from './api';
+import {
+    get,
+    post
+} from './api';
 
 
 export function handleLogin(params) {
@@ -11,7 +14,7 @@ export function handleLogin(params) {
  * @param {*} params 
  * @returns 获取泊位信息列表
  */
-export function getBerList( params) {
+export function getBerList(params) {
     return get('/gcs/v1/getBerchList', params)
 }
 
@@ -21,7 +24,7 @@ export function getBerList( params) {
  * @param {*} params 
  * @returns 获取泊位详情信息
  */
-export function getBerDetail( params) {
+export function getBerDetail(params) {
     return post('/gcs/v1/getBerchDetails', params)
 }
 /**
@@ -66,12 +69,12 @@ export function loginControl(params) {
 }
 //获取告警状态
 export function getAlarmList(params) {
-    return get('/gcs/v1/getAlarmList',params)
+    return get('/gcs/v1/getAlarmList', params)
 }
 //取消告警
-export function clearAlarm(params) {  
-    return post('/gcs/v1/clearAlarm',params)
-  }
-  export function deleteRecord(params) {
-    return post('/gcs/v1/deleteRecord',params)
-  }
+export function clearAlarm(params) {
+    return post('/gcs/v1/clearAlarm', params)
+}
+export function deleteRecord(params) {
+    return post('/gcs/v1/deleteRecord', params)
+}

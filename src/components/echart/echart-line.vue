@@ -190,7 +190,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .lines {
-    width: 40%;
+    width: 30%;
     // min-width: 600px;
 }
 
