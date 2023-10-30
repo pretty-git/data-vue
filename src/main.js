@@ -8,6 +8,10 @@ import '@/assets/styles/base.scss'
 import '@/assets/styles/common.scss'
 import '@/assets/iconfont/iconfont.css'
 import dataV from '@jiaminghi/data-view'
+import {
+	getCookieValue
+} from './config/env'
+
 import '../rem';
 Vue.use(dataV)
 Vue.use(vueParticles)
@@ -19,12 +23,11 @@ Vue.config.productionTip = false
 Vue.prototype.$api = api;
 
 router.beforeEach((to, from, next) => {
-	if (to.meta.title) {
-		document.title = to.meta.title;
-	}
-	next();
-})
-
+	if (to.name !== 'Login' && !getCookieValue('SET_TOKEN')) {
+		console.log('wew')
+		next({ name: 'Login' })}
+	else next()
+  })
 new Vue({
 	router,
 	store,

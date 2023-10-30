@@ -259,6 +259,7 @@ export default {
         logout() {
             clearInterval(this.timeHandler)
             clearInterval(this.messageHandler)
+            this.messageHandler = null
             removeCookie('SET_TOKEN')
             removeCookie('BAR_SET_TOKEN')
             removeCookie('COUNT_NAME')
