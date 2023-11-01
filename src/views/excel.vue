@@ -32,7 +32,7 @@
                             </el-date-picker>
                         </el-form-item>
                     </el-form>
-                    <div class="export-btn" style="margin: auto;">查询</div>
+                    <div class="export-btn" style="margin: auto;" @click="getData">查询</div>
                 </div>
             </div>
             <div class="right">
@@ -105,6 +105,7 @@ export default {
             this.columnsData = columns[this.excelObj.type]
             this.getData()
         },
+
         async getData() {
             try {
                 this.loading = true
