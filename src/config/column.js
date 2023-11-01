@@ -2,7 +2,7 @@ export const columns = {
     0:  [{
         prop: 'id',
         label: '序号',
-        width: 80
+        width: 100
     }, {
         prop: 'carNO',
         label: '车牌号',
@@ -64,7 +64,7 @@ export const columns = {
     }, {
         prop: 'operate',
         label: '操作',
-        width: '80px',
+        width: '100px',
 
 
 
@@ -78,7 +78,7 @@ export const berColumns = {
         columns: [{
             prop: 'id',
             label: '序号',
-            width: '80px',
+            width: '100px',
         }, {
             prop: 'dumpTime',
             label: '时间',
@@ -91,7 +91,7 @@ export const berColumns = {
         }, {
             prop: 'operate',
             label: '操作',
-            width: '80px',
+            width: '100px',
 
         }],
         name: '垃圾倒置查询'
@@ -101,7 +101,7 @@ export const berColumns = {
         columns: [{
             prop: 'id',
             label: '序号',
-            width: '80px',
+            width: '100px',
         }, {
             prop: 'replaceTime',
             label: '时间',
@@ -117,7 +117,7 @@ export const berColumns = {
         }, {
             prop: 'operate',
             label: '操作',
-            width: '80px',
+            width: '100px',
 
         }],
         name: '更换容器查询'
@@ -128,7 +128,7 @@ export const berColumns = {
             {
                 prop: 'id',
                 label: '序号',
-                width: '80px',
+                width: '100px',
             }, {
                 prop: 'alarmTime',
                 label: '时间',

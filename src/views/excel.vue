@@ -24,11 +24,12 @@
                             <el-input v-model="form.carNO" placeholder="车牌号码"></el-input>
                         </el-form-item>
                         <el-form-item label="起始日期">
-                            <el-date-picker v-model="form.startTime" value-format="yyyyMMdd" type="date" placeholder="起始日期">
+                            <el-date-picker v-model="form.startTime" value-format="yyyy-MM-dd" type="date"
+                                placeholder="起始日期">
                             </el-date-picker>
                         </el-form-item>
                         <el-form-item label="结束日期">
-                            <el-date-picker v-model="form.endTime" type="date" placeholder="结束日期">
+                            <el-date-picker v-model="form.endTime" value-format="yyyy-MM-dd" type="date" placeholder="结束日期">
                             </el-date-picker>
                         </el-form-item>
                     </el-form>
@@ -66,7 +67,7 @@ export default {
     data() {
         return {
             pageNum: 1,
-            totalNum: 100,
+            totalNum: 0,
             pageSize: 10,
             loading: false,
             columnsData: {},
@@ -110,13 +111,14 @@ export default {
             try {
                 this.loading = true
                 const { carNO, startTime, endTime } = this.form
+                console.log(carNO, startTime, endTime)
                 const { data, totalNum } = await this.$api.getRecordList({
                     pageSize: this.pageSize,
                     pageNum: this.pageNum,
                     recordType: this.excelObj.type,
                     carNO,
-                    startTime,
-                    endTime
+                    startTime: startTime ? `${startTime} 00:00:00` : '',
+                    endTime: endTime ? `${endTime} 23:59:59` : '',
                 })
                 this.totalNum = totalNum
                 this.tableData = (data || []).map(item => {
@@ -130,6 +132,7 @@ export default {
                     }
                 })
             } catch (error) {
+                console.log(error)
                 this.loading = false
 
             } finally {
@@ -198,7 +201,7 @@ export default {
 
 .title {
     background-color: #4b7aaf;
-    padding: 20px 44px;
+    padding: 16px 44px;
     color: #fff;
     font-size: 18px;
     border-bottom: 2px solid #63b5cf;
@@ -208,8 +211,8 @@ export default {
 
 
 .choose-item {
-    padding: 2vh 40px;
-    font-size: 18px;
+    padding: 14px 40px;
+    font-size: 16px;
     color: #fff !important;
     cursor: pointer;
 
