@@ -248,7 +248,7 @@ export default {
 }
 
 .label {
-    font-size: 24px;
+    font-size: 22px;
     color: #00f5ff;
     width: 130px;
     text-align: left;

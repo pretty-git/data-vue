@@ -65,8 +65,8 @@
                     <div class="left-icon"></div>图表信息
                 </div>
                 <div style="display: flex;align-items: baseline;justify-content: space-around;">
-                    <Lines :data="chartData" :height="36" :show="false" width="48%" :isBorder="false"></Lines>
-                    <Bar :data="chartData" :height="36" :show="false" width="48%" :isBorder="false"></Bar>
+                    <Lines :data="chartData" :height="34" :show="false" width="48%" :isBorder="false"></Lines>
+                    <Bar :data="chartData" :height="34" :show="false" width="48%" :isBorder="false"></Bar>
                 </div>
             </div>
         </div>
@@ -180,7 +180,7 @@ export default {
 <style scoped lang="scss">
 .contents {
     width: 95%;
-    margin: 30px auto 0;
+    margin: 16px auto 0;
     display: flex;
 }
 
@@ -193,10 +193,10 @@ export default {
 .circle-t {
     border-radius: 50%;
     border: 18px solid red;
-    width: 150px;
-    height: 150px;
+    width: 130px;
+    height: 130px;
     text-align: center;
-    line-height: 150px;
+    line-height: 130px;
     font-size: 26px;
     color: #fff;
     margin: auto;
@@ -294,7 +294,7 @@ export default {
     font-weight: bold;
     display: flex;
     flex-wrap: wrap;
-    margin-top: 24px;
+    margin-top: 16px;
 }
 
 

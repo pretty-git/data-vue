@@ -196,7 +196,6 @@ export default {
 
 .chart {
     width: 100%;
-    margin-top: 16px;
 
 }
 
