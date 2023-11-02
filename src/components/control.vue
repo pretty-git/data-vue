@@ -123,17 +123,16 @@ export default {
         handleChange(item, key, id) {
             if (key === 'selfMotion') {
                 this.list = item ? autoList : handleList
-            } else if (id === 6 && item === 1) {
+            } else if (id == 6 && item) {
                 this.$api.sendControlCmd({ berthId: +this.$route.query.berthId, controlData: 0, controlCmd: 7 })
                 this.controlStatus.boltUnlock = 0
-
-            } else if (id === 7 && item === 1) {
+            } else if (id == 7 && item) {
                 this.$api.sendControlCmd({ berthId: +this.$route.query.berthId, controlData: 0, controlCmd: 6 })
                 this.controlStatus.boltLock = 0
-            } else if (id === 4 && item === 1) {
+            } else if (id == 4 && item) {
                 this.$api.sendControlCmd({ berthId: +this.$route.query.berthId, controlData: 0, controlCmd: 5 })
                 this.controlStatus.capDown = 0
-            } else if (id === 5 && item === 1) {
+            } else if (id == 5 && item) {
                 this.$api.sendControlCmd({ berthId: +this.$route.query.berthId, controlData: 0, controlCmd: 4 })
                 this.controlStatus.capUp = 0
             }
