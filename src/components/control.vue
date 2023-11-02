@@ -25,9 +25,7 @@
                     <div class="label">
                         {{ item.name }}
                     </div>
-                    <el-switch
-                        :disabled="!!controlStatus.selfMotion && !['platformRise', 'platformDrop'].includes(item.key)"
-                        @change="handleChange($event, item.key, item.id)" :active-value="item.id" :inactive-value="0"
+                    <el-switch @change="handleChange($event, item.key, item.id)" :active-value="item.id" :inactive-value="0"
                         :width="50" class="ml-12" v-model="controlStatus[item.key]" active-color="#13ce66"
                         inactive-color="#eee">
                     </el-switch>
@@ -53,7 +51,7 @@
 <script>
 import { Message } from 'element-ui';
 import md5 from 'md5';
-import { getCookieValue, removeCookie } from '../config/env'
+import { getCookieValue, removeCookie, handleList, autoList } from '../config/env'
 export default {
     data() {
         return {
@@ -64,40 +62,9 @@ export default {
                 account: '',
                 password: '',
             },
+            list: handleList,
             isLogin: false,
-            list: [{
-                id: 2,
-                name: '平台上升',
-                key: "platformRise",
-            }, {
-                id: 3,
-                name: '平台下降',
-                key: "platformDrop",
-            }, {
-                id: 4,
-                name: '上盖上翻',
-                key: "capUp",
-            }, {
-                id: 5,
-                name: '上盖下翻',
-                key: "capDown",
-            }, {
-                id: 6,
-                name: '插销锁住',
-                key: "boltLock",
-            }, {
-                id: 7,
-                name: '插销松开',
-                key: "boltUnlock",
-            }, {
-                id: 8,
-                name: '进料口上翻',
-                key: "feedportUp",
-            }, {
-                id: 9,
-                name: '进料口下翻',
-                key: "feedportDown",
-            },],
+
         }
     },
     props: {
@@ -117,7 +84,7 @@ export default {
         data: {
             handler(value) {
                 this.controlStatus = value || {}
-
+                this.list = value.selfMotion ? autoList : handleList
             },
             deep: true,
             immediate: true
@@ -128,7 +95,9 @@ export default {
         if (getCookieValue('IS_LOGIN')) {
             this.isLogin = true
         }
+
         console.log('控制')
+        this.list = handleList
     },
     methods: {
         handleExit() {
@@ -152,9 +121,22 @@ export default {
 
         },
         handleChange(item, key, id) {
-            this.list.forEach(item => {
-                this.$set(this.controlStatus, item.key, 0)
-            })
+            if (key === 'selfMotion') {
+                this.list = item ? autoList : handleList
+            } else if (id === 6 && item === 1) {
+                this.$api.sendControlCmd({ berthId: +this.$route.query.berthId, controlData: 0, controlCmd: 7 })
+                this.controlStatus.boltUnlock = 0
+
+            } else if (id === 7 && item === 1) {
+                this.$api.sendControlCmd({ berthId: +this.$route.query.berthId, controlData: 0, controlCmd: 6 })
+                this.controlStatus.boltLock = 0
+            } else if (id === 4 && item === 1) {
+                this.$api.sendControlCmd({ berthId: +this.$route.query.berthId, controlData: 0, controlCmd: 5 })
+                this.controlStatus.capDown = 0
+            } else if (id === 5 && item === 1) {
+                this.$api.sendControlCmd({ berthId: +this.$route.query.berthId, controlData: 0, controlCmd: 4 })
+                this.controlStatus.capUp = 0
+            }
             this.controlStatus[key] = item
             this.$emit('status', item, id)
             if (!this.sGlobal) {
