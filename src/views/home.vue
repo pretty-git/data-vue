@@ -71,9 +71,12 @@ export default {
                 "statType": 0
             })
             this.chartData = { weigth: weigth || [], trans: trans || [] }
+            const time = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate() + 1).padStart(2, '0')}`
             const { data } = await this.$api.getRecordList({
                 pageSize: 20,
                 recordType: 1,
+                startTime: `${time} 00:00:00`,
+                endTime: `${time} 23: 59: 59`
             })
             this.carList = (data || []).map(item => {
                 return [

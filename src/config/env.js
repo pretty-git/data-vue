@@ -53,6 +53,6 @@ export const autoList = [{
   key: "autoUp",
 }, {
   id: 13,
-  name: '自动下升',
+  name: '自动下降',
   key: "autoDown",
 }]
