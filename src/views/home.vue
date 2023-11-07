@@ -53,8 +53,8 @@ export default {
     },
     async mounted() {
         this.refresh = setInterval(() => {
-            this.getDetail
-        }, 10000)
+            this.getDetail()
+        }, 30000)
     },
     methods: {
         async getDetail() {

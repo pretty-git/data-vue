@@ -50,9 +50,9 @@ export const handleList = [{
 export const autoList = [{
   id: 12,
   name: '自动上升',
-  key: "autoUp",
+  key: "caseRise",
 }, {
   id: 13,
   name: '自动下降',
-  key: "autoDown",
+  key: "caseDecline",
 }]
