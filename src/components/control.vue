@@ -123,6 +123,7 @@ export default {
         handleChange(item, key, id) {
             if (key === 'selfMotion') {
                 this.list = item ? autoList : handleList
+                this.$emit('update', true)
             } else if (id == 6 && item) {
                 this.$api.sendControlCmd({ berthId: +this.$route.query.berthId, controlData: 0, controlCmd: 7 })
                 this.controlStatus.boltUnlock = 0

@@ -59,7 +59,7 @@
         </div>
 
         <div class="bottom-main">
-            <Control :data="berObj" :is-global="false"></Control>
+            <Control :data="berObj" :is-global="false" @update="getDetail"></Control>
             <div class="bottom-right">
                 <div class="echart-title">
                     <div class="left-icon"></div>图表信息
@@ -129,13 +129,14 @@ export default {
                 }
             })
         },
-        async getDetail() {
+        async getDetail(isUpdate=false) {
             const date = new Date();
             const subtime = date.getFullYear() + String(date.getMonth() + 1).padStart(2, '0')
             const { data } = await this.$api.getBerDetail({
                 berthId: +this.$route.query.berthId
             })
             this.berObj = data
+            if(isUpdate) return
             const { data: weigth } = await this.$api.getGarbage({
                 berthId: +this.$route.query.berthId,
                 subtime,

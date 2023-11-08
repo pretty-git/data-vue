@@ -24,7 +24,6 @@ Vue.prototype.$api = api;
 
 router.beforeEach((to, from, next) => {
 	if (to.name !== 'Login' && !getCookieValue('SET_TOKEN')) {
-		console.log('wew')
 		next({ name: 'Login' })}
 	else next()
   })

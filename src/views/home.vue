@@ -54,7 +54,7 @@ export default {
     async mounted() {
         this.refresh = setInterval(() => {
             this.getDetail
-        }, 10000)
+        }, 30000)
     },
     methods: {
         async getDetail() {
@@ -71,7 +71,7 @@ export default {
                 "statType": 0
             })
             this.chartData = { weigth: weigth || [], trans: trans || [] }
-            const time = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate() + 1).padStart(2, '0')}`
+            const time = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
             const { data } = await this.$api.getRecordList({
                 pageSize: 20,
                 recordType: 1,
