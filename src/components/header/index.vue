@@ -174,7 +174,7 @@ export default {
                     await this.$api.clearAlarm({ alarmId: item.alarm_id })
                 }
             }
-        }, 3000)
+        }, 5000)
 
     }, methods: {
         getTime() {

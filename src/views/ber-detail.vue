@@ -129,17 +129,14 @@ export default {
                 }
             })
         },
-        async getDetail(isOnlyDetail = false) {
-
+        async getDetail(isUpdate = false) {
             const date = new Date();
             const subtime = date.getFullYear() + String(date.getMonth() + 1).padStart(2, '0')
             const { data } = await this.$api.getBerDetail({
                 berthId: +this.$route.query.berthId
             })
             this.berObj = data
-            if (isOnlyDetail) {
-                return
-            }
+            if (isUpdate) return
             const { data: weigth } = await this.$api.getGarbage({
                 berthId: +this.$route.query.berthId,
                 subtime,
