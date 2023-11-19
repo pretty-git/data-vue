@@ -1,6 +1,7 @@
 <template>
     <!--Top Start!-->
     <div class="wp flex">
+
         <div class="left" @click="backHome">
             <img class="left-img" src="../../assets//img/logo.png">
         </div>
@@ -99,12 +100,19 @@
                 <el-button type="primary" @click="handleClose">确 定</el-button>
             </span>
         </el-dialog> -->
+        <form :action="url" method="post">
+            <template v-for="(item, index) in params">
+                <input type="hidden" :name="index" :value="item">
+            </template>
+        </form>
+
     </div>
 </template>
 <script>
 import md5 from 'md5';
 import Control from '../control.vue'
 import { removeCookie, getCookieValue } from '../../config/env'
+import axios from 'axios';
 
 export default {
     name: 'Top',
@@ -119,6 +127,8 @@ export default {
                 username: '',
                 password: ''
             },
+            params: {},
+            url: '',
             dialogVisible: false,
             messageDialog: false,
             status: "login",
@@ -160,23 +170,42 @@ export default {
             this.date = this.getTime()
         }, 1000)
         this.countName = getCookieValue('COUNT_NAME')
-        this.messageHandler = setInterval(async () => {
-            const { data } = await this.$api.getAlarmList()
-            if ((data || []).length > 0) {
-                clearInterval(this.messageHandler)
-                for (let item of data) {
-                    await this.$confirm(`${item.content}`, `${item.title}`, {
-                        confirmButtonText: '确定',
-                        cancelButtonText: '取消',
-                        type: 'warning'
-                    })
-                    console.log(item)
-                    await this.$api.clearAlarm({ alarmId: item.alarm_id })
-                }
-            }
-        }, 5000)
+        this.getWarning()
 
     }, methods: {
+       async getWarning() {
+            this.messageHandler = setInterval(async () => {
+                const { data } = await this.$api.getAlarmList()
+                if ((data || []).length > 0) {
+                    clearInterval(this.messageHandler)
+                    this.messageHandler = null
+                    for (let item of data) {
+                        console.log(item)
+                        if (item.url) {
+                            this.url = item.url
+                            const params = JSON.parse(item.params)
+                            axios.post(item.url, params)
+                                .then((response) => {
+                                    params.session = response.session
+                                    this.params = params
+                                    setTimeout(() => {
+                                        document.forms[0].submit();
+                                    }, 1000);
+                                })
+                        } else {
+                            await this.$confirm(`${item.content}`, `${item.title}`, {
+                                confirmButtonText: '确定',
+                                cancelButtonText: '取消',
+                                type: 'warning'
+                            })
+                            await this.$api.clearAlarm({ alarmId: item.alarm_id })
+                            this.messageHandler()
+                        }
+
+                    }
+                }
+            }, 5000)
+        },
         getTime() {
             const date = new Date();
 
@@ -575,5 +604,4 @@ export default {
      font-size: 20px;
      color: #fff;
      margin-top: 12px;
- }
-</style>
+ }</style>
